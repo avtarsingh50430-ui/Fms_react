@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
+} from 'recharts';
 
 const OrderIncomeList = () => {
   const [orderIncome, setOrderIncome] = useState([]);
@@ -20,7 +23,8 @@ const OrderIncomeList = () => {
         }
       );
       if (res.data.status) {
-        setOrderIncome(res.data.message || []);
+        const order = res.data.message;
+        setOrderIncome(Array.isArray(order) ? order : []);
       } else {
         setOrderIncome([]);
       }
@@ -53,7 +57,8 @@ const OrderIncomeList = () => {
       );
 
       if (res.data.status) {
-        setOrderIncome(res.data.message || []);
+        const order = res.data.message;
+        setOrderIncome(Array.isArray(order) ? order : []);
       } else {
         setOrderIncome([]);
       }
@@ -74,8 +79,15 @@ const OrderIncomeList = () => {
     fetchAllIncome(); // Load all data on mount
   }, []);
 
+  // ✅ Prepare data for chart
+  const chartData = orderIncome.map((item) => ({
+    name: item.customer_orderno || `#${item.id}`,
+    net: parseFloat(item.net_amount) || 0,
+    gross: parseFloat(item.gross_amount) || 0,
+  }));
+
   return (
-    <div className="container my-4">
+    <div  className="content-wrapper" style={{ minHeight: 440 }}>
       <h3>Order Income Records</h3>
 
       {/* Filter Inputs */}
@@ -116,49 +128,63 @@ const OrderIncomeList = () => {
       ) : orderIncome.length === 0 ? (
         <p>No income records found.</p>
       ) : (
-   <table className="table table-bordered table-hover">
-  <thead className="table-light">
-    <tr>
-      <th>ID</th>
-      <th>Trip ID</th>
-      <th>Company</th>
-      <th>Order No</th>
-      <th>Shipment Type</th>
-      <th>Load Type</th>
-      <th>Pickup Location</th>
-      <th>Pickup Date & Time</th>
-      <th>Delivery Location</th>
-      <th>Delivery Date & Time</th>
-      <th>Trailer Type</th>
-      <th>Gross</th>
-      <th>Net</th>
-      <th>Driver</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {orderIncome.map((item) => (
-      <tr key={item.id}>
-        <td>{item.id}</td>
-        <td>{item.tmsTriptId}</td>
-        <td>{item.company}</td>
-        <td>{item.customer_orderno}</td>
-        <td>{item.shipment_type}</td>
-        <td>{item.load_type}</td>
-        <td>{item.pickup_address}</td>
-        <td>{item.pickup_date} {item.pickuptime}</td>
-        <td>{item.delivery_address}</td>
-        <td>{item.deliver_date} {item.deliverytime}</td>
-        <td>{item.trailortype}</td>
-        <td>${item.gross_amount}</td>
-        <td>${item.net_amount}</td>
-        <td>{item.driver_id}</td>
-        <td>{item.status}</td>
-      </tr>
-    ))}
-  </tbody>
-</table>
+        <>
+          <table className="table table-bordered table-hover">
+            <thead className="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Trip ID</th>
+                <th>Company</th>
+                <th>Order No</th>
+                <th>Shipment Type</th>
+                <th>Load Type</th>
+                <th>Pickup Location</th>
+                <th>Pickup Date & Time</th>
+                <th>Delivery Location</th>
+                <th>Delivery Date & Time</th>
+                <th>Trailer Type</th>
+                <th>Gross</th>
+                <th>Net</th>
+                <th>Driver</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderIncome.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.tmsTriptId}</td>
+                  <td>{item.company}</td>
+                  <td>{item.customer_orderno}</td>
+                  <td>{item.shipment_type}</td>
+                  <td>{item.load_type}</td>
+                  <td>{item.pickup_address}</td>
+                  <td>{item.pickup_date} {item.pickuptime}</td>
+                  <td>{item.delivery_address}</td>
+                  <td>{item.deliver_date} {item.deliverytime}</td>
+                  <td>{item.trailortype}</td>
+                  <td>${item.gross_amount}</td>
+                  <td>${item.net_amount}</td>
+                  <td>{item.driver_id}</td>
+                  <td>{item.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
+          {/* ✅ Chart Section */}
+          <h5 className="mt-5">Net vs Gross Amount Chart</h5>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="net" fill="#8884d8" name="Net Amount" />
+              <Bar dataKey="gross" fill="#82ca9d" name="Gross Amount" />
+            </BarChart>
+          </ResponsiveContainer>
+        </>
       )}
     </div>
   );

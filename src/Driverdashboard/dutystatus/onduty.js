@@ -11,10 +11,12 @@ const TripForm = () => {
 
   const [formData, setFormData] = useState({
     tripId: "",
+    odotrucks: "",
     motiveDetails: "",
     note: "",
     images: [],
     preTripInspection: "",
+      documentType: "", // ✅ New
   });
 
   const [signatureData, setSignatureData] = useState("");
@@ -92,10 +94,12 @@ const TripForm = () => {
     const formDataToSend = new FormData();
     formDataToSend.append("driver_id", loginDetail.driver_id);
     formDataToSend.append("trip_id", formData.tripId);
+    formDataToSend.append("odotrucks", formData.odotrucks);
     formDataToSend.append("motive_id", loginDetail.motive_id);
     formDataToSend.append("motive_details", formData.motiveDetails);
     formDataToSend.append("note", formData.note);
     formDataToSend.append("pre_trip_inspection", formData.preTripInspection);
+    formDataToSend.append("document_type", formData.documentType); // ✅ New
 
     formDataToSend.append("latitude", location.lat || "");
     formDataToSend.append("longitude", location.lng || "");
@@ -119,6 +123,7 @@ const TripForm = () => {
 
       setFormData({
         tripId: "",
+        odotrucks: "",
         motiveDetails: "",
         note: "",
         images: [],
@@ -218,6 +223,80 @@ const TripForm = () => {
                     disabled
                   />
                 </div>
+                <div className="col-md-6">
+                  <label className="form-label fw-bold">Odo Meter</label>
+                  <input
+                    type="text"
+                    name="odotrucks"
+                    className="form-control"
+                    handleChange={handleChange}
+                    placeholder="Enter Odo Truck "
+                    value={
+                      formData.odotrucks  ? formData.odotrucks : ""
+                    }
+                    
+                  />
+                </div>
+                {/* Image Upload with Document Type */}
+<div className="col-12">
+  <label className="form-label fw-bold">Upload Images (Optional)</label>
+  <div className="d-flex gap-3 align-items-center">
+    <input
+      type="file"
+      className="form-control"
+      accept="image/*"
+      multiple
+      onChange={handleImageChange}
+    />
+
+    {/* Document Type Dropdown */}
+    <select
+      className="form-select"
+      style={{ maxWidth: "250px" }}
+      name="documentType"
+      value={formData.documentType || ""}
+      onChange={handleChange}
+      required
+    >
+      <option value="">-- Select Document Type --</option>
+      <option value="BOL">BOL (Bill of Lading)</option>
+      <option value="custom_with_decals">Custom Paperwork with DECALS</option>
+      <option value="custom_without_decals">Custom Paperwork without DECALS</option>
+      <option value="POD">POD (Proof of Delivery)</option>
+      <option value="receipt">Receipt</option>
+      <option value="scale_weight">Scale Weight</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div className="form-text">You can upload multiple images (max 5)</div>
+
+  {previewUrls.length > 0 && (
+    <div className="mt-3 d-flex flex-wrap gap-3">
+      {previewUrls.map((url, index) => (
+        <div
+          key={index}
+          className="position-relative border rounded p-1"
+          style={{ width: "120px" }}
+        >
+          <img
+            src={url}
+            alt={`Preview ${index + 1}`}
+            className="img-fluid rounded"
+          />
+          <button
+            type="button"
+            className="btn btn-sm btn-danger position-absolute top-0 end-0"
+            onClick={() => removeImage(index)}
+            style={{ transform: "translate(50%, -50%)" }}
+          >
+            &times;
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
                 {/* Notes */}
                 <div className="col-12">

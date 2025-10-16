@@ -67,7 +67,7 @@ const FinanceManager = () => {
   }, []);
 
   return (
-    <div className="container my-4">
+    <div  className="content-wrapper" style={{ minHeight: 440 }}>
       <h2 className="mb-4">Finance Manager</h2>
 
       <form className="row g-3 mb-4" onSubmit={handleSubmit}>

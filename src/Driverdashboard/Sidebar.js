@@ -30,50 +30,55 @@ let logout=()=>{
     {/* sidebar menu: : style can be found in sidebar.less */}
     <ul className="sidebar-menu tree" data-widget="tree">
       {/*
-  <li id="dashboardMainMenu">
+  <li  className="nav-item" id="dashboardMainMenu">
     <a href="/dashboard">
       <i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
   */}
-       <li id="manageOrderSubMenu">
-            <Link to={'/drivertrip'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/drivertrip'}>
               <i className="fa fa-circle-o" /> Manage Orders
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/driverincome'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/driverincome'}>
               <i className="fa fa-circle-o" /> Income 
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/startduty'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/startduty'}>
               <i className="fa fa-circle-o" /> start duty 
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/stopduty'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/stopduty'}>
               <i className="fa fa-circle-o" /> stop duty
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/dutylist'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/dutylist'}>
               <i className="fa fa-circle-o" />Dutylist
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/logs'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/logs'}>
               <i className="fa fa-circle-o" />Logs
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/expense'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/expense'}>
               <i className="fa fa-circle-o" />Expense
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/livelocation'}>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/livelocation'}>
               <i className="fa fa-circle-o" />livelocation
+            </Link>
+          </li>
+       <li  className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/drivercustompaper'}>
+              <i className="fa fa-circle-o" />drivercustompaper
             </Link>
           </li>
           <li>

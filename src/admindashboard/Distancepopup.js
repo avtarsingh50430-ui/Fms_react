@@ -1,7 +1,47 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const api_key = "D487078091664D428AA781953AE84DF1";
+
+const expenseOptions = [
+  "Layover",
+  "Detention",
+  "Driver Assist",
+  "Driver Load/Unload",
+  "Driver Count",
+  "TONU (Truck Ordered Not Used)",
+  "Redelivery",
+  "Reconsignment / Diversion",
+  "Stop-Off Charges (Multiple Stops)",
+  "Deadhead / Empty Miles",
+  "Tarping Fee (Flatbed)",
+  "Lumper Fee",
+  "Liftgate Service",
+  "Pallet Jack Service",
+  "Inside Delivery",
+  "Residential Delivery",
+  "Limited Access Delivery",
+  "Border Crossing Fee",
+  "Customs Clearance Fee",
+  "Hazardous Materials (HAZMAT) Handling",
+  "Refrigeration (Reefer Fuel Surcharge)",
+  "Clean Truck / Washout Fee",
+  "Storage / Warehouse Fee",
+  "Border Wait Time",
+  "Inbound Handling Fee",
+  "Appointment Scheduling Fee",
+  "Escort / Pilot Car Fee (Oversize Loads)",
+  "Permits (Oversize / Overweight)",
+  "Scale Ticket Fee",
+  "Toll Reimbursement",
+  "Ferry Fee",
+  "Fuel Surcharge",
+  "Excess Mileage Fee",
+  "Parking Fee",
+  "After-Hours / Weekend Delivery",
+  "Holiday Delivery Surcharge",
+];
 
 const Distancepopup = ({ places1, places2, places3 = [] }) => {
   const [place1, setPlace1] = useState(places1 || "");
@@ -12,6 +52,24 @@ const Distancepopup = ({ places1, places2, places3 = [] }) => {
   const [map, setMap] = useState(null);
   const [route, setRoute] = useState(null);
   const mapContainerRef = useRef(null);
+
+  // Expenses state
+  const [expenses, setExpenses] = useState([{ type: "", amount: "" }]);
+
+  const handleExpenseChange = (index, field, value) => {
+    const newExpenses = [...expenses];
+    newExpenses[index][field] = value;
+    setExpenses(newExpenses);
+  };
+
+  const addExpense = () => {
+    setExpenses([...expenses, { type: "", amount: "" }]);
+  };
+
+  const removeExpense = (index) => {
+    const newExpenses = expenses.filter((_, i) => i !== index);
+    setExpenses(newExpenses);
+  };
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -95,7 +153,6 @@ const Distancepopup = ({ places1, places2, places3 = [] }) => {
         });
 
         if (response.status === 200) {
-          console.log(response.data)
           setDistance(response.data);
 
           if (map) {
@@ -130,94 +187,180 @@ const Distancepopup = ({ places1, places2, places3 = [] }) => {
     }
   }, [places1, places2, map]);
 
+  // Handle drag end
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(place3);
+    const [reordered] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reordered);
+    setPlace3(items);
+    calculateDistance(); // re-calc after reorder
+  };
+
   return (
     <div>
       <h1>Distance Calculator</h1>
-     
+
       <button onClick={calculateDistance} className="btn btn-primary">
         Calculate Distance
       </button>
+
       <div className="row">
         <div className="col-md-3">
-        <div>
-        <label>
-          To place:
-          <input
-            type="text"
-            className="form-control"
-            value={place1}
-            onChange={(e) => setPlace1(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          From place:
-          <input
-            type="text"
-            className="form-control"
-            value={place2}
-            onChange={(e) => setPlace2(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Additional Stops (Optional):
-          {place3.map((stop, index) => (
-            <div key={index} className="mb-2">
+          {/* Input fields for places */}
+          <div>
+            <label>
+              To place:
               <input
                 type="text"
                 className="form-control"
-                value={stop.location}
-                onChange={(e) => {
-                  const newStops = [...place3];
-                  newStops[index].location = e.target.value;
-                  setPlace3(newStops);
-                }}
+                value={place1}
+                onChange={(e) => setPlace1(e.target.value)}
               />
+            </label>
+          </div>
+          <div>
+            <label>
+              From place:
+              <input
+                type="text"
+                className="form-control"
+                value={place2}
+                onChange={(e) => setPlace2(e.target.value)}
+              />
+            </label>
+          </div>
+
+          {/* Drag-and-drop stops */}
+          <div>
+            <label>
+              Additional Stops (Drag to Reorder):
+              <DragDropContext onDragEnd={handleDragEnd}>
+                <Droppable droppableId="stops">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {place3.map((stop, index) => (
+                        <Draggable
+                          key={index}
+                          draggableId={`stop-${index}`}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              className="mb-2 d-flex"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <input
+                                type="text"
+                                className="form-control"
+                                value={stop.location}
+                                onChange={(e) => {
+                                  const newStops = [...place3];
+                                  newStops[index].location = e.target.value;
+                                  setPlace3(newStops);
+                                }}
+                              />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+              <button
+                className="btn btn-success btn-sm mt-2"
+                onClick={() =>
+                  setPlace3([
+                    ...place3,
+                    { stoptype: "Intermediate", location: "" },
+                  ])
+                }
+              >
+                Add Stop
+              </button>
+            </label>
+          </div>
+
+          {/* Expenses Section */}
+          <h3 className="mt-4">Expenses</h3>
+          {expenses.map((exp, index) => (
+            <div key={index} className="d-flex mb-2 gap-2">
+              <select
+                className="form-control"
+                value={exp.type}
+                onChange={(e) =>
+                  handleExpenseChange(index, "type", e.target.value)
+                }
+              >
+                <option value="">Select Expense</option>
+                {expenseOptions.map((opt, i) => (
+                  <option key={i} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Amount"
+                value={exp.amount}
+                onChange={(e) =>
+                  handleExpenseChange(index, "amount", e.target.value)
+                }
+              />
+              <button
+                className="btn btn-danger btn-sm"
+                onClick={() => removeExpense(index)}
+              >
+                X
+              </button>
             </div>
           ))}
-          <button
-            className="btn btn-success btn-sm"
-            onClick={() =>
-              setPlace3([...place3, { stoptype: "Intermediate", location: "" }])
-            }
-          >
-            Add Stop
+          <button className="btn btn-secondary btn-sm" onClick={addExpense}>
+            + Add Expense
           </button>
-        </label>
-      </div>
-{distance ? (
-  (() => {
-    const lastReportLine = distance[0]?.ReportLines?.[distance[0].ReportLines.length - 1];
 
-    if (!lastReportLine) return <p>No valid distance data found.</p>;
+          {/* Distance result */}
+          {distance ? (
+            (() => {
+              const lastReportLine =
+                distance[0]?.ReportLines?.[
+                  distance[0].ReportLines.length - 1
+                ];
 
-    const miles = parseFloat(lastReportLine.TMiles);
-    const cost = parseFloat(lastReportLine.TCostMile);
-    const perMileCost = miles > 0 ? (cost / miles).toFixed(2) : "0.00";
+              if (!lastReportLine) return <p>No valid distance data found.</p>;
 
-    return (
-      <div>
-        <h2>Distance Results</h2>
-        <pre>Total Distance: {miles} Miles</pre>
-        <pre>Total Cost: ${cost}</pre>
-        <pre>Total Hours: {lastReportLine.THours} Hrs</pre>
-        <pre>Per Mile Cost: ${perMileCost}</pre>
-      </div>
-    );
-  })()
-) : (
-  "Progress..."
-)}
+              const miles = parseFloat(lastReportLine.TMiles);
+              const cost = parseFloat(lastReportLine.TCostMile);
+              const perMileCost =
+                miles > 0 ? (cost / miles).toFixed(2) : "0.00";
 
-
+              return (
+                <div>
+                  <h2>Distance Results</h2>
+                  <pre>Total Distance: {miles} Miles</pre>
+                  <pre>Total Cost: ${cost}</pre>
+                  <pre>Total Hours: {lastReportLine.THours} Hrs</pre>
+                  <pre>Per Mile Cost: ${perMileCost}</pre>
+                </div>
+              );
+            })()
+          ) : (
+            "Progress..."
+          )}
 
           {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
+
         <div className="col-md-9">
-          <div ref={mapContainerRef} style={{ width: "100%", height: "400px" }}></div>
+          <div
+            ref={mapContainerRef}
+            style={{ width: "100%", height: "400px" }}
+          ></div>
         </div>
       </div>
     </div>

@@ -8,11 +8,132 @@ import { toast } from 'react-toastify'
 
 const Createtrips = () => {
   const navigate = useNavigate();
-
+const [shipments, setShipments] = useState([{
+    commodity: [""],
+    weight: [""],
+    unit: [""],
+    package: [""],
+    trailortype: "",
+    manifest: "",
+    hazmat: "",
+    addlcharge: "",
+    appt: "",
+    pip: "",
+    ctpat: ""
+  }]);
+  
+  const [showShipmentsPopup, setShowShipmentsPopup] = useState(false);
+  const [activeShipmentIndex, setActiveShipmentIndex] = useState(0);
   const[data,setdata]=useState([])
   const[error,seterror]=useState([])
   let userdata = JSON.parse(localStorage.getItem('logindetail'));
   const [stops, setStops] = useState([]);
+  const [draggedIndex, setDraggedIndex] = useState(null);
+
+
+
+  // Add new shipment
+const addNewShipment = () => {
+  setShipments(prev => [...prev, {
+    commodity: [""],
+    weight: [""],
+    unit: [""],
+    package: [""],
+    trailortype: "",
+    manifest: "",
+    hazmat: "",
+    addlcharge: "",
+    appt: "",
+    pip: "",
+    ctpat: ""
+  }]);
+};
+
+// Remove shipment
+const removeShipment = (index) => {
+  if (shipments.length > 1) {
+    setShipments(prev => prev.filter((_, i) => i !== index));
+    if (activeShipmentIndex >= index) {
+      setActiveShipmentIndex(prev => Math.max(0, prev - 1));
+    }
+  }
+};
+
+// Update shipment data
+const handleShipmentChange = (index, field, value) => {
+  setShipments(prev => {
+    const updated = [...prev];
+    updated[index][field] = value;
+    return updated;
+  });
+};
+
+// Handle array fields in shipments (commodity, weight, etc.)
+const handleShipmentArrayChange = (index, field, arrayIndex, value) => {
+  setShipments(prev => {
+    const updated = [...prev];
+    if (!updated[index][field]) {
+      updated[index][field] = [];
+    }
+    updated[index][field][arrayIndex] = value;
+    return updated;
+  });
+};
+
+// Add row to specific shipment
+const handleAddRowToShipment = (shipmentIndex) => {
+  setShipments(prev => {
+    const updated = [...prev];
+    const currentRows = updated[shipmentIndex].commodity.length;
+    
+    updated[shipmentIndex].commodity[currentRows] = "";
+    updated[shipmentIndex].weight[currentRows] = "";
+    updated[shipmentIndex].unit[currentRows] = "";
+    updated[shipmentIndex].package[currentRows] = "";
+    
+    return updated;
+  });
+};
+
+// Remove row from specific shipment
+const handleRemoveRowFromShipment = (shipmentIndex, rowIndex) => {
+  setShipments(prev => {
+    const updated = [...prev];
+    updated[shipmentIndex].commodity = updated[shipmentIndex].commodity.filter((_, i) => i !== rowIndex);
+    updated[shipmentIndex].weight = updated[shipmentIndex].weight.filter((_, i) => i !== rowIndex);
+    updated[shipmentIndex].unit = updated[shipmentIndex].unit.filter((_, i) => i !== rowIndex);
+    updated[shipmentIndex].package = updated[shipmentIndex].package.filter((_, i) => i !== rowIndex);
+    return updated;
+  });
+};
+    // Drag and Drop handlers
+  const handleDragStart = (e, index) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index);
+    e.currentTarget.style.opacity = '0.5';
+  };
+
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, index) => {
+    e.preventDefault();
+    if (draggedIndex !== null && draggedIndex !== index) {
+      const updatedStops = [...stops];
+      const [movedItem] = updatedStops.splice(draggedIndex, 1);
+      updatedStops.splice(index, 0, movedItem);
+      setStops(updatedStops);
+    }
+    setDraggedIndex(null);
+  };
+
+  const handleDragEnd = (e) => {
+    e.currentTarget.style.opacity = '1';
+    setDraggedIndex(null);
+  };
   const addStop = () => {
     const newStop = {
       stoptype: 'Delivery', // Default value
@@ -190,6 +311,7 @@ let handleonSubmit = async (e) => {
     form.append('userid', userdata.id);
     form.append('Location12',JSON.stringify(stops));
     form.append('mode', "LOG");
+      form.append('shipments', JSON.stringify(shipments));
 
   try {
     const response = await axios.post('https://isovia.ca/fms_api/api/create', form);
@@ -207,6 +329,55 @@ let handleonSubmit = async (e) => {
    
   
     navigate(-1)
+  } catch (error) {
+    console.error('Error:', error);
+    toast.error(error, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+   
+  }
+}
+let handleSaveAndAssign = async (e) => {
+  e.preventDefault();
+  
+  const form = new FormData();
+    // Append regular fields
+    Object.keys(formData).forEach((key) => {
+      if (Array.isArray(formData[key])) {
+        formData[key].forEach((item) => form.append(`${key}[]`, item)); // Append arrays
+      } else {
+        form.append(key, formData[key]);
+      }
+    });
+
+    form.append('userid', userdata.id);
+    form.append('Location12',JSON.stringify(stops));
+    form.append('mode', "LOG");
+
+  try {
+    const response = await axios.post('https://isovia.ca/fms_api/api/create', form);
+    setmessage(response.data.message);
+    toast.success('Successfully created', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+   
+  
+   navigate(`/trips/assign/${response.data.id}`);
+
   } catch (error) {
     console.error('Error:', error);
     toast.error(error, {
@@ -920,8 +1091,42 @@ const handleRemoveRow = (index) => {
         </div>
 
         {/* Render Stops Dynamically */}
-        {stops.map((stop, index) => (
-          <div key={index} style={{ marginTop: '15px' }}>
+         {stops.map((stop, index) => (
+          <div 
+            key={index} 
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDrop={(e) => handleDrop(e, index)}
+            onDragEnd={handleDragEnd}
+            style={{
+              marginTop: '15px',
+              padding: '15px',
+              border: '1px solid #ddd',
+              borderRadius: '5px',
+              backgroundColor: '#f9f9f9',
+              cursor: 'move',
+              opacity: draggedIndex === index ? 0.5 : 1
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>
+                ☰ Drag to reorder
+              </span>
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => {
+                  const updatedStops = [...stops];
+                  updatedStops.splice(index, 1);
+                  setStops(updatedStops);
+                }}
+                style={{ marginLeft: 'auto' }}
+              >
+                Remove
+              </button>
+            </div>
+            
             <div className="form-group">
               <label>Stop Type</label>
               <select
@@ -1090,6 +1295,231 @@ const handleRemoveRow = (index) => {
         </h4>
       </div>
     </div>
+
+    {/* Add this button where you want the multiple shipments functionality */}
+<div className="col-md-12 col-xs-12 pull pull-left">
+  <div className="form-group">
+    <button
+      type="button"
+      className="btn btn-info"
+      onClick={() => setShowShipmentsPopup(true)}
+    >
+      Manage Shipments ({shipments.length})
+    </button>
+  </div>
+</div>
+
+{/* Shipments Popup Modal */}
+{showShipmentsPopup && (
+  <div className="modal show" style={{display: "block"}} tabIndex={-1} role="dialog">
+    <div className="modal-dialog modal-lg" role="document">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Manage Shipments</h5>
+          <button
+            type="button"
+            className="close"
+            onClick={() => setShowShipmentsPopup(false)}
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="modal-body">
+          {/* Shipment Tabs */}
+          <ul className="nav nav-tabs">
+            {shipments.map((_, index) => (
+              <li key={index} className="nav-item">
+                <button
+                  className={`nav-link ${activeShipmentIndex === index ? 'active' : ''}`}
+                  onClick={() => setActiveShipmentIndex(index)}
+                >
+                  Shipment {index + 1}
+                  {shipments.length > 1 && (
+                    <span 
+                      className="badge badge-danger ml-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeShipment(index);
+                      }}
+                      style={{cursor: 'pointer'}}
+                    >
+                      ×
+                    </span>
+                  )}
+                </button>
+              </li>
+            ))}
+            <li className="nav-item">
+              <button
+                className="nav-link btn-success text-white"
+                onClick={addNewShipment}
+              >
+                + Add
+              </button>
+            </li>
+          </ul>
+
+          {/* Shipment Content */}
+          <div className="tab-content mt-3">
+            {shipments.map((shipment, index) => (
+              <div 
+                key={index}
+                className={`tab-pane ${activeShipmentIndex === index ? 'active' : ''}`}
+              >
+                {/* Shipment Form - Similar to your existing shipment section */}
+                <div className="table-responsive">
+                  <table className="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Commodities</th>
+                        <th>Weight</th>
+                        <th>Unit</th>
+                        <th>Packages</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {shipment.commodity.map((commodity, rowIndex) => (
+                        <tr key={rowIndex}>
+                          <td>
+                            <input
+                              type="text"
+                              placeholder="Enter Commodity"
+                              className="form-control"
+                              value={commodity}
+                              onChange={(e) => handleShipmentArrayChange(index, 'commodity', rowIndex, e.target.value)}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              placeholder="Enter Weight"
+                              className="form-control"
+                              value={shipment.weight[rowIndex] || ""}
+                              onChange={(e) => handleShipmentArrayChange(index, 'weight', rowIndex, e.target.value)}
+                            />
+                          </td>
+                          <td>
+                            <select
+                              className="form-control"
+                              value={shipment.unit[rowIndex] || ""}
+                              onChange={(e) => handleShipmentArrayChange(index, 'unit', rowIndex, e.target.value)}
+                            >
+                              <option value="">Select Unit</option>
+                              <option value="Gallons">Gallons</option>
+                              <option value="KG">KG</option>
+                              <option value="TON">TON</option>
+                              <option value="Metric Ton">Metric Ton</option>
+                              <option value="Ounces">Ounces</option>
+                              <option value="MBF">MBF</option>
+                              <option value="Pounds">Pounds</option>
+                            </select>
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              placeholder="Enter No. of Packages"
+                              className="form-control"
+                              value={shipment.package[rowIndex] || ""}
+                              onChange={(e) => handleShipmentArrayChange(index, 'package', rowIndex, e.target.value)}
+                            />
+                          </td>
+                          <td>
+                            {rowIndex > 0 && (
+                              <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={() => handleRemoveRowFromShipment(index, rowIndex)}
+                              >
+                                X
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    type="button"
+                    className="btn btn-success btn-sm"
+                    onClick={() => handleAddRowToShipment(index)}
+                  >
+                    + Add Row
+                  </button>
+                </div>
+
+                {/* Other shipment fields */}
+                {/* <div className="row mt-3">
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Trailer Type</label>
+                      <select
+                        className="form-control"
+                        value={shipment.trailortype}
+                        onChange={(e) => handleShipmentChange(index, 'trailortype', e.target.value)}
+                      >
+                        <option value="">Choose Trailer Type</option>
+                        {data.trailors?.map(item => (
+                          <option key={item.id} value={item.trailortype}>
+                            {item.trailortype}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>View Manifest</label>
+                      <select
+                        className="form-control"
+                        value={shipment.manifest}
+                        onChange={(e) => handleShipmentChange(index, 'manifest', e.target.value)}
+                      >
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <div className="form-group">
+                      <label>Hazmat</label>
+                      <select
+                        className="form-control"
+                        value={shipment.hazmat}
+                        onChange={(e) => handleShipmentChange(index, 'hazmat', e.target.value)}
+                      >
+                        <option value="YES">YES</option>
+                        <option value="NO">NO</option>
+                      </select>
+                    </div>
+                  </div>
+                </div> */}
+
+                {/* Add more shipment fields as needed */}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setShowShipmentsPopup(false)}
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setShowShipmentsPopup(false)}
+          >
+            Save Shipments
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     <div className="col-md-12 col-xs-12 pull pull-left">
       <div className="table-responsive">
         <table className="table table-bordered" id="dynamic_weight">
@@ -1472,6 +1902,10 @@ const handleRemoveRow = (index) => {
         <button type="button" className="btn btn-primary" onClick={ handleonSubmit}>
           Save Trip
         </button>
+        <button type="button" className="btn btn-success" onClick={ handleSaveAndAssign}>
+  Save Trip and Assign Dispatch
+</button>
+
         <button
           type="button"
           className="btn btn-secondary"

@@ -9,6 +9,7 @@ const Assigntrip = () => {
   const { id } = useParams(); // Get the id from the URL
 
   const [formData, setFormData] = useState({
+    truckunitnumber: '',
     trailors: '',
     trucks: '',
     drivers: '',
@@ -26,7 +27,7 @@ const Assigntrip = () => {
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
     try {
-      const response = await axios.post(`https://isovia.ca/fms_api/api/tripassign/${id}/1`, data);
+      const response = await axios.post(`http://localhost/fms_api/api/tripassign/${id}/1`, data);
 
       console.log('Response:', response.data);
       if (response.data.redirect_url) {
@@ -155,7 +156,12 @@ console.log(data)
               </select>
             </div>
           </div>
-
+     <div className="col-md-12 col-xs-12 pull pull-left">
+            <div className="form-group">
+              <label htmlFor="city_driver_id">Truck Unit Number</label>
+           <input type="text" className="form-control" id="truckunitnumber" name="truckunitnumber" placeholder="Enter Truck Unit Number" autoComplete="off" onChange={handleChange} value={formData.truckunitnumber} />
+            </div>
+          </div>
           {/* City-Driver Selection */}
           <div className="col-md-12 col-xs-12 pull pull-left">
             <div className="form-group">

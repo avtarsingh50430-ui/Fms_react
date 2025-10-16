@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const OrderTripIncomeList = () => {
   const [tripIncome, setTripIncome] = useState([]);
@@ -23,7 +35,6 @@ const OrderTripIncomeList = () => {
       );
 
       if (res.data.status === 'success') {
-            console.log(res.data.message)
         settotalnetamount(res.data.total_net_amount);
         setTripIncome(res.data.message || []);
       }
@@ -54,7 +65,6 @@ const OrderTripIncomeList = () => {
       );
 
       if (res.data.status === 'success') {
-        console.log(res.data.message)
         settotalnetamount(res.data.total_net_amount);
         setTripIncome(res.data.message || []);
       }
@@ -67,8 +77,46 @@ const OrderTripIncomeList = () => {
     fetchTripIncome();
   }, []);
 
+  const getChartData = () => {
+    const labels = Array.isArray(tripIncome)
+      ? tripIncome.map((item, i) => item.customer_orderno || `Trip ${i + 1}`)
+      : [];
+
+    const data = Array.isArray(tripIncome)
+      ? tripIncome.map(item => parseFloat(item.net_amount) || 0)
+      : [];
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Net Amount ($)',
+          data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          barThickness: 30,
+          maxBarThickness: 40,
+        },
+      ],
+    };
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Net Income by Order',
+      },
+    },
+  };
+
   return (
-    <div className="container my-4">
+    <div  className="content-wrapper" style={{ minHeight: 440 }}>
       <h3>Trip Income Records</h3>
 
       <div className="row my-3">
@@ -99,35 +147,47 @@ const OrderTripIncomeList = () => {
         <p>Loading...</p>
       ) : tripIncome.length === 0 ? (
         <p>No trip income found.</p>
-      ) : (<>
-                <h5>Total Order Net Amount: $ {totalnetamount}</h5>
-        <table className="table table-bordered">
-          <thead className="table-light">
-            <tr>
-              <th>ID</th>
-              <th>Trip ID</th>
-              <th>Company</th>
-              <th>Order No</th>
-              <th>Gross</th>
-              <th>Net</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tripIncome.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.tmsTriptId}</td>
-                <td>{item.company}</td>
-                <td>{item.customer_orderno}</td>
-                <td>{item.gross_amount}</td>
-                <td>{item.net_amount}</td>
-                <td>{item.status}</td>
+      ) : (
+        <>
+          <h5>Total Order Net Amount: $ {totalnetamount}</h5>
+
+          {/* Chart section */}
+          {tripIncome.length > 0 && (
+            <div className="my-4">
+              <h5>Net Amount Chart</h5>
+              <Bar data={getChartData()} options={chartOptions} />
+            </div>
+          )}
+
+          {/* Table section */}
+          <table className="table table-bordered">
+            <thead className="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Trip ID</th>
+                <th>Company</th>
+                <th>Order No</th>
+                <th>Gross</th>
+                <th>Net</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-     </> )}
+            </thead>
+            <tbody>
+              {tripIncome.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.tmsTriptId}</td>
+                  <td>{item.company}</td>
+                  <td>{item.customer_orderno}</td>
+                  <td>{item.gross_amount}</td>
+                  <td>{item.net_amount}</td>
+                  <td>{item.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };

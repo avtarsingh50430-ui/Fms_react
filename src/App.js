@@ -154,6 +154,13 @@ import ExpenseManager from "./Driverdashboard/Expense/ExpenseManager";
 import OrderIncomeList from "./admindashboard/finance/Orderincome";
 import OrderTripIncomeList from "./admindashboard/finance/OrderTripIncomeList";
 import Expense from "./admindashboard/finance/Expense";
+import Iftalisting from "./admindashboard/ifta/Iftalisting";
+import Ifta from "./admindashboard/ifta/Ifta";
+import AceTripForm from "./admindashboard/borderconnect/AceTripForm";
+import AciTripForm from "./admindashboard/borderconnect/AciTripForm";
+import CustomPaperwork from "./admindashboard/CustomPaperwork/CustomPaperwork";
+import DriverCustomPaperwork from "./Driverdashboard/CustomPaperwork/DriverCustomPaperwork";
+import ListCoversheet from "./admindashboard/listCoversheet/ListCoversheet";
 
 
 
@@ -202,6 +209,8 @@ function App() {
           <Route path="/agentgetOrderincome" element={<div className="skin-blue sidebar-mini"><Agentheader /><OrderIncomeList /></div>} />
         <Route path="/agentordertripIncome" element={<div className="skin-blue sidebar-mini"><Agentheader /><OrderTripIncomeList /></div>} />
         <Route path="/agentexpense" element={<div className="skin-blue sidebar-mini"><Agentheader /><Expense /></div>} />
+         <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripIncome /><Footeradmin /></div>} />
+         
 
 {/*end Agent */}
 
@@ -317,8 +326,14 @@ function App() {
         <Route path="/financeManager" element={<div className="skin-blue sidebar-mini"><Adminheader /><FinanceManager /><Footeradmin /></div>} />
         <Route path="/getOrderincome" element={<div className="skin-blue sidebar-mini"><Adminheader /><OrderIncomeList /><Footeradmin /></div>} />
         <Route path="/ordertripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><OrderTripIncomeList /><Footeradmin /></div>} />
-        <Route path="/expense" element={<div className="skin-blue sidebar-mini"><Adminheader /><Expense /><Footeradmin /></div>} />
-        <Route path="/tripIncome/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripIncome /><Footeradmin /></div>} />
+        <Route path="/getexpense" element={<div className="skin-blue sidebar-mini"><Adminheader /><Expense /><Footeradmin /></div>} />
+        <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripIncome /><Footeradmin /></div>} />
+        <Route path="/iftalist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Iftalisting /><Footeradmin /></div>} />
+        <Route path="/ifta" element={<div className="skin-blue sidebar-mini"><Adminheader /><Ifta /><Footeradmin /></div>} />
+        <Route path="/borderconnect/acetripform" element={<div className="skin-blue sidebar-mini"><Adminheader /><AceTripForm /><Footeradmin /></div>} />
+        <Route path="/borderconnect/acitripform" element={<div className="skin-blue sidebar-mini"><Adminheader /><AciTripForm /><Footeradmin /></div>} />
+        <Route path="/custompage" element={<div className="skin-blue sidebar-mini"><Adminheader /><CustomPaperwork /><Footeradmin /></div>} />
+        <Route path="/listcoversheet" element={<div className="skin-blue sidebar-mini"><Adminheader /><ListCoversheet /><Footeradmin /></div>} />
       {/*end admin panel */}
 
 
@@ -337,6 +352,7 @@ function App() {
         <Route path="/daily-log-detail" element={<div className="skin-blue sidebar-mini"><Driverheader /><DailyLogDetail /></div>} />
         <Route path="/livelocation" element={<div className="skin-blue sidebar-mini"><Driverheader /><LiveLocationMap /></div>} />
         <Route path="/expense" element={<div className="skin-blue sidebar-mini"><Driverheader /><ExpenseManager /></div>} />
+        <Route path="/drivercustompaper" element={<div className="skin-blue sidebar-mini"><Driverheader /><DriverCustomPaperwork /></div>} />
          
 {/*end driver */}
 

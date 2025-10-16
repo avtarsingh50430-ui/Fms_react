@@ -97,7 +97,7 @@ const DailyLogDetail = () => {
 
   if (!state || !state.blocks) {
     return (
-      <div className="container py-4">
+      <div  className="content-wrapper" style={{ minHeight: 440 }}>
         <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
           ← Back
         </button>
@@ -109,7 +109,7 @@ const DailyLogDetail = () => {
   const { date, blocks } = state;
 
   return (
-    <div className="container py-4">
+    <div  className="content-wrapper" style={{ minHeight: 440 }}>
       <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
         ← Back
       </button>

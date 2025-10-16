@@ -49,9 +49,11 @@ const TripLogChart = () => {
   const [todayBlocks, setTodayBlocks] = useState([]);
   const [statusTotals, setStatusTotals] = useState({});
   const navigate = useNavigate();
+  const {id} =JSON.parse(localStorage.getItem("logindetail"));
+  console.log(id)
 
   useEffect(() => {
-    axios.get("https://isovia.ca/fms_api/api/list_trips?driver_id=10020")
+    axios.get(`https://isovia.ca/fms_api/api/list_trips?driver_id=${id}`)
       .then((res) => {
         if (res.data.status === "success") {
           setLogs(res.data.data);

@@ -5,6 +5,7 @@ const Createtrucks = () => {
   const [formData, setFormData] = useState({
     name: '',
     plateno: '',
+    unitno: '',
     trucktype: '',
     vin: '',
     make: '',
@@ -148,6 +149,21 @@ const handleSubmit = (e) => {
               </div>
               <div className="col-md-6 col-xs-12 pull pull-left">
                 <div className="form-group">
+                  <label htmlFor="username">Unit Number#</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="unitno"
+                    name="unitno"
+                    placeholder="Enter Unit Number#"
+                    autoComplete="off"
+                    value={formData.unitno}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
                   <label htmlFor="store">Truck Type</label>
                   <select
                     className="form-control"
@@ -251,7 +267,24 @@ const handleSubmit = (e) => {
                     value={formData.fueltype}
                     onChange={handleChange}
                   >
-                    <option value="CA">Canada</option>
+                      <option value="">-- Select Fuel Type --</option>
+<option value="a55">A55</option>
+<option value="biodiesel">Biodiesel</option>
+<option value="compressed_natural_gas">Compressed natural gas</option>
+<option value="diesel">Diesel</option>
+<option value="e85">E-85</option>
+<option value="electric">Electric</option>
+<option value="ethanol">Ethanol</option>
+<option value="gasoline">Gasoline</option>
+<option value="hydrogen">Hydrogen</option>
+<option value="hybrid_electric">Hybrid electric</option>
+<option value="liquid_natural_gas">Liquid natural gas</option>
+<option value="m85">M-85</option>
+<option value="methanol">Methanol</option>
+<option value="plug_in_hybrid_electric">Plug-in hybrid electric</option>
+<option value="propane">Propane</option>
+<option value="other">Other</option>
+
                   </select>
                 </div>
               </div>

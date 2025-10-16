@@ -24,7 +24,11 @@ const ExpenseManager = () => {
       const response = await axios.get(`${baseURL}/getExpense`, {
         withCredentials: true
       });
-      setExpenses(response.data.message || []);
+      const expensesData = Array.isArray(response.data?.message) 
+      ? response.data.message 
+      : [];
+      
+    setExpenses(expensesData);
     } catch (error) {
       console.error('Error fetching expenses:', error);
     }
@@ -106,7 +110,7 @@ const ExpenseManager = () => {
   };
 
   return (
-    <div className="skin-blue sidebar-mini">
+    <div  className="content-wrapper" style={{ minHeight: 440 }}>
 
       <div className="container mt-4">
         <h2>Expense Management</h2>
@@ -302,8 +306,8 @@ const ExpenseManager = () => {
               expenses.map((exp) => (
                 <tr key={exp.id}>
                   <td>{exp.id}</td>
-                  <td>{exp.from_id}</td>
-                  <td>{exp.to_id}</td>
+                 <td >{exp.driver_fname} {exp.driver_lname}</td>
+                  <td>{exp.customer_orderno}</td>
                   <td>{exp.amount}</td>
                   <td>{exp.reason}</td>
                   <td>{exp.exp_date}</td>

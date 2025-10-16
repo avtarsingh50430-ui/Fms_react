@@ -26,6 +26,7 @@ a.drop_menu { color: #000 !important;font-size: 15px;font-weight: 500;}
 .bottom-header{width: 100%;float: left;}
 .navbar-brand img{max-width: 20%;}
 li.nav-item {padding: 0 20px;font-size: 18px;font-weight: 700;text-transform: capitalize;color: #083847;}
+.tree li.nav-item {padding: 0 0px;font-size: 18px;font-weight: 700;text-transform: capitalize;color: #083847;}
 
 .nav-item a {color: #083847;}
 .navbar-light .navbar-nav .nav-link {color: #083847 !important;}
@@ -194,7 +195,9 @@ to {opacity: 1;transform: translate(0px);}
 from {opacity: 0;transform: translatex(100px);}
 to {opacity: 1;transform: translate(0px);}
 }
-
+li.nav-item{
+  font-size: 15px !important;
+}
 
 /*footer*/
 .top_footer{width: 100%;float: left;padding: 50px 0; background-color:#083847;}

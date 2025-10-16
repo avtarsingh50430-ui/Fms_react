@@ -1,33 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Income = () => {
-  const data = [
-    { driverName: 'John Doe', trip: 'Trip to Downtown', address: '123 Main St, Springfield', date: '2024-07-23', income: 50.00 },
-    { driverName: 'Jane Smith', trip: 'Trip to Airport', address: '456 Elm St, Springfield', date: '2024-07-22', income: 75.00 },
-    // Add more rows as needed
-  ];
-
-  const [filteredData, setFilteredData] = useState(data);
+  const [incomes, setIncomes] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const baseURL = 'https://isovia.ca/fms_api/api';
+  const logindetail = JSON.parse(localStorage.getItem('logindetail'));
+  const driverId = logindetail?.id;
+
+  const fetchIncomeByDriver = async (driverId) => {
+    const data = new FormData();
+    data.append('driver_id', driverId);
+
+    try {
+      const res = await axios.post(`${baseURL}/gettripIncome`, data, {
+        withCredentials: true,
+      });
+
+      if (res.data.status) {
+        const trips = res.data.message;
+        const formatted = Array.isArray(trips)
+          ? trips.map(item => ({
+              driverName: `Driver #${item.driver_id}`,
+              trip: `${item.pickup_desc || 'Pickup'} → ${item.delivery_desc || 'Delivery'}`,
+              address: `${item.pickup_address} → ${item.delivery_address}`,
+              date: item.createdat?.split(' ')[0],
+              income: isNaN(parseFloat(item.net_amount)) ? 0 : parseFloat(item.net_amount),
+            }))
+          : [];
+
+        setIncomes(formatted);
+        setFilteredData(formatted);
+      } else {
+        setIncomes([]);
+        setFilteredData([]);
+      }
+    } catch (error) {
+      console.error('Fetch Income Error:', error);
+    }
+  };
+
   const handleFilter = () => {
     if (startDate && endDate) {
-      const filtered = data.filter(row => {
+      const filtered = incomes.filter(row => {
         const rowDate = new Date(row.date);
         return rowDate >= startDate && rowDate <= endDate;
       });
       setFilteredData(filtered);
     } else {
-      setFilteredData(data);
+      setFilteredData(incomes);
     }
   };
+
+  useEffect(() => {
+    if (driverId) {
+      fetchIncomeByDriver(driverId);
+    }
+  }, [driverId]);
+
+  const totalIncome = filteredData.reduce((sum, row) => sum + (row.income || 0), 0);
 
   return (
     <div className="content-wrapper">
       <h1>Driver Income Details</h1>
+
       <div style={{ marginBottom: '20px' }}>
         <DatePicker
           selected={startDate}
@@ -45,32 +86,52 @@ const Income = () => {
           endDate={endDate}
           placeholderText="End Date"
         />
-        <button onClick={handleFilter}>Filter</button>
+        <button onClick={handleFilter} style={{ marginLeft: '10px' }}>Filter</button>
       </div>
+
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr>
-            <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Driver Name</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Trip</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Address</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Date</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', backgroundColor: '#f2f2f2' }}>Income</th>
+            <th style={thStyle}>Driver Name</th>
+            <th style={thStyle}>Trip</th>
+            <th style={thStyle}>Address</th>
+            <th style={thStyle}>Date</th>
+            <th style={thStyle}>Income</th>
           </tr>
         </thead>
         <tbody>
           {filteredData.map((row, index) => (
             <tr key={index}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.driverName}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.trip}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.address}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{row.date}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>${row.income.toFixed(2)}</td>
+              <td style={tdStyle}>{row.driverName}</td>
+              <td style={tdStyle}>{row.trip}</td>
+              <td style={tdStyle}>{row.address}</td>
+              <td style={tdStyle}>{row.date}</td>
+              <td style={tdStyle}>${(row.income ?? 0).toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan="4" style={tdStyle}><strong>Total</strong></td>
+            <td style={tdStyle}><strong>${totalIncome.toFixed(2)}</strong></td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
+};
+
+// Styles
+const thStyle = {
+  border: '1px solid #ddd',
+  padding: '8px',
+  backgroundColor: '#f2f2f2',
+  textAlign: 'left',
+};
+const tdStyle = {
+  border: '1px solid #ddd',
+  padding: '8px',
+  textAlign: 'left',
 };
 
 export default Income;

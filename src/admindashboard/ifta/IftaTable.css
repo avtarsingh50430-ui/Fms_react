@@ -1,0 +1,41 @@
+.ifta-container {
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ifta-logo {
+  width: 120px;
+}
+
+.company-info {
+  text-align: left;
+}
+
+.fuel-charge {
+  text-align: right;
+}
+
+.rebate-box {
+  background: #d4f3d4;
+  color: #008000;
+  padding: 10px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.ifta-table th {
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+.ifta-table .highlight {
+  background-color: #ffe6e6; /* light pink */
+}

@@ -57,119 +57,120 @@ let logout=()=>{
     {/* sidebar menu: : style can be found in sidebar.less */}
     <ul className="sidebar-menu tree" data-widget="tree">
       {/*
-  <li id="dashboardMainMenu">
+  <li className="nav-item" id="dashboardMainMenu">
     <a href="/dashboard">
       <i class="fa fa-dashboard"></i> <span>Dashboard</span>
     </a>
   </li>
   */}
-       {/* <li id="manageOrderSubMenu">
-            <Link to={'/drivertrip'}>
+       {/* <li className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/drivertrip'}>
               <i className="fa fa-circle-o" /> Manage Orders
             </Link>
           </li> */}
-           <li id="dashboardMainMenu">
-            <Link to="/accounting">
+           <li className="nav-item" id="dashboardMainMenu">
+            <Link className="dropdown-item"  to="/accounting">
               <i className="fa fa-dashboard" /> <span>Dashboard</span>
             </Link>
           </li>
-          <li id="dashboardMainMenu">
-            <Link to="/admin">
+          <li className="nav-item" id="dashboardMainMenu">
+            <Link className="dropdown-item"  to="/admin">
               <i className="fa fa-dashboard" /> <span>Control Panel</span>
             </Link>
           </li>
-          <li id="dashboardMainMenu">
-            <Link to="/createagent">
+          <li className="nav-item" id="dashboardMainMenu">
+            <Link className="dropdown-item"  to="/createagent">
               <i className="fa fa-user" /> <span>Create  Agent</span>
             </Link>
           </li>
-                 <li><Link to="/agentgetOrderincome"><i className="fa fa-user" /> <span>Order Income</span></Link></li>
-                    <li><Link to="/agentordertripIncome"><i className="fa fa-user" /> <span>Order Trip Income</span></Link></li>
-                    <li><Link to="/agentexpense"><i className="fa fa-user" /> <span>Expense</span></Link></li>
-          <li id="dashboardMainMenu">
-            <Link to="/agentlist">
+                 <li><Link className="dropdown-item"  to="/agentgetOrderincome"><i className="fa fa-user" /> <span>Order Income</span></Link></li>
+                    <li><Link className="dropdown-item"  to="/agentordertripIncome"><i className="fa fa-user" /> <span>Order Trip Income</span></Link></li>
+                    <li><Link className="dropdown-item"  to="/agentexpense"><i className="fa fa-user" /> <span>Expense</span></Link></li>
+                    <li><Link className="dropdown-item"  to="/gettripIncome"><i className="fa fa-user" /> <span>Trip Income</span></Link></li>
+          <li className="nav-item" id="dashboardMainMenu">
+            <Link className="dropdown-item"  to="/agentlist">
               <i className="fa fa-user" /> <span> Agent List</span>
             </Link>
           </li>
 
-          <li className="dropdown" id="OrderMainNav">
+          <li className="nav-item dropdown"  id="OrderMainNav">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
               <i className="fa fa-files-o" />
               <span>Orders</span>
      
             </a>
             <ul className="dropdown-menu bg-dark text-light">
-              <li id="createOrderSubMenu">
-                <Link to={'/createorder'}>
+              <li className="nav-item" id="createOrderSubMenu">
+                <Link className="dropdown-item"  to={'/createorder'}>
                   <i className="fa fa-circle-o" /> Create Orders
                 </Link>
               </li>
-              <li id="manageOrderSubMenu">
-                <Link to={'/orderlist'}>
+              <li className="nav-item" id="manageOrderSubMenu">
+                <Link className="dropdown-item"  to={'/orderlist'}>
                   <i className="fa fa-circle-o" /> Manage Orders
                 </Link>
               </li>
             </ul>
           </li>
-          <li className="dropdown" id="TripMainNav">
+          <li className="nav-item dropdown"  id="TripMainNav">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
               <i className="fa fa-files-o" />
               <span>Trips</span>
         
             </a>
             <ul className="dropdown-menu bg-dark text-light">
-              <li id="createTripSubMenu">
-                <Link to={'/createtrips'}>
+              <li className="nav-item" id="createTripSubMenu">
+                <Link className="dropdown-item"  to={'/createtrips'}>
                   <i className="fa fa-circle-o" /> Create Trips
                 </Link>
               </li>
-              <li id="manageTripSubMenu">
-                <Link to={'/triplist'}>
+              <li className="nav-item" id="manageTripSubMenu">
+                <Link className="dropdown-item"  to={'/triplist'}>
                   <i className="fa fa-circle-o" /> Manage Trips
                 </Link>
               </li>
             </ul>
           </li>
-          <li className="dropdown" id="InvoiceMainNav">
+          <li className="nav-item dropdown"  id="InvoiceMainNav">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
               <i className="fa fa-files-o" />
               <span>Invoices</span>
         
             </a>
             <ul className="dropdown-menu bg-dark text-light">
-              <li id="manageInvoiceSubMenu">
-                <Link to={'/invoices'}>
+              <li className="nav-item" id="manageInvoiceSubMenu">
+                <Link className="dropdown-item"  to={'/invoices'}>
                   <i className="fa fa-circle-o" /> Manage Invoices
                 </Link>
               </li>
             </ul>
           </li>
-          <li className="dropdown" id="ReportMainNav">
+          <li className="nav-item dropdown"  id="ReportMainNav">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
               <i className="fa fa-files-o" />
               <span>Reports</span>
      
             </a>
             <ul className="dropdown-menu bg-dark text-light">
-              <li id="productReportSubMenu">
+              <li className="nav-item" id="productReportSubMenu">
                 <a href="#">
                   <i className="fa fa-circle-o" /> Product Wise
                 </a>
               </li>
-              <li id="storeReportSubMenu">
+              <li className="nav-item" id="storeReportSubMenu">
                 <a href="#">
                   <i className="fa fa-circle-o" /> Total Store wise
                 </a>
               </li>
             </ul>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/agentorder'}>
+       <li className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/agentorder'}>
               <i className="fa fa-circle-o" /> Orders 
             </Link>
           </li>
-       <li id="manageOrderSubMenu">
-            <Link to={'/agentincome'}>
+       <li className="nav-item" id="manageOrderSubMenu">
+            <Link className="dropdown-item"  to={'/agentincome'}>
               <i className="fa fa-circle-o" /> Income 
             </Link>
           </li>

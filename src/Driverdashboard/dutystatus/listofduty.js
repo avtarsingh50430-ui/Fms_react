@@ -13,16 +13,42 @@ const Dutylist = () => {
   const [zoomImage, setZoomImage] = useState(null);
   const [showZoomModal, setShowZoomModal] = useState(false);
   const [locations, setLocations] = useState({});
+    const [previewUrls, setPreviewUrls] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({ lat: null, lng: null });
 
   const [formData, setFormData] = useState({
     duty_status: "",
+    odotrucks: "",
     notes: "",
     images: null,
+     documentType: "",
   });
 
   const sigRef = useRef(null);
   const [signatureData, setSignatureData] = useState("");
+const handleImageChange = (e) => {
+  const files = Array.from(e.target.files);
+  setFormData((prev) => ({ ...prev, images: files }));
+
+  const previews = files.map((file) => URL.createObjectURL(file));
+  setPreviewUrls(previews);
+};
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
+
+
+const removeImage = (index) => {
+  const newImages = [...formData.images];
+  newImages.splice(index, 1);
+  setFormData((prev) => ({ ...prev, images: newImages }));
+
+  const newPreviews = [...previewUrls];
+  newPreviews.splice(index, 1);
+  setPreviewUrls(newPreviews);
+};
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -131,12 +157,24 @@ const Dutylist = () => {
     e.preventDefault();
     setUpdating(true);
     try {
+      
       const driver = JSON.parse(localStorage.getItem("logindetail"));
       const formPayload = new FormData();
+      if (formData.documentType) {
+  formPayload.append("document_type", formData.documentType);
+}
+
+if (formData.images && formData.images.length > 0) {
+  formData.images.forEach((file) => {
+    formPayload.append("images[]", file);
+  });
+}
       formPayload.append("driver_id", driver.id);
+      formPayload.append("odotrucks", formData.odotrucks);
       formPayload.append("trip_id", selectedTrip.trip_id);
       formPayload.append("duty_status", formData.duty_status);
       formPayload.append("notes", formData.notes);
+      
       
       // Add current location to the form data
       if (currentLocation.lat && currentLocation.lng) {
@@ -252,6 +290,79 @@ const Dutylist = () => {
                     />
                     <small className="text-muted">Your current GPS coordinates</small>
                   </div>
+                  <div className="mb-3">
+                    <label className="form-label">Odo Trucks</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={formData.odotrucks}
+                 
+                      onChange={(e) =>
+                        setFormData({ ...formData, odotrucks: e.target.value })
+                      }
+                    />
+                  
+                  </div>
+                  {/* Image Upload with Document Type */}
+<div className="col-12">
+  <label className="form-label fw-bold">Upload Images (Optional)</label>
+  <div className="d-flex gap-3 align-items-center">
+    <input
+      type="file"
+      className="form-control"
+      accept="image/*"
+      multiple
+      onChange={handleImageChange}
+    />
+
+    {/* Document Type Dropdown */}
+    <select
+      className="form-select"
+      style={{ maxWidth: "250px" }}
+      name="documentType"
+      value={formData.documentType || ""}
+      onChange={handleChange}
+      required
+    >
+      <option value="">-- Select Document Type --</option>
+      <option value="BOL">BOL (Bill of Lading)</option>
+      <option value="custom_with_decals">Custom Paperwork with DECALS</option>
+      <option value="custom_without_decals">Custom Paperwork without DECALS</option>
+      <option value="POD">POD (Proof of Delivery)</option>
+      <option value="receipt">Receipt</option>
+      <option value="scale_weight">Scale Weight</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div className="form-text">You can upload multiple images (max 5)</div>
+
+  {previewUrls.length > 0 && (
+    <div className="mt-3 d-flex flex-wrap gap-3">
+      {previewUrls.map((url, index) => (
+        <div
+          key={index}
+          className="position-relative border rounded p-1"
+          style={{ width: "120px" }}
+        >
+          <img
+            src={url}
+            alt={`Preview ${index + 1}`}
+            className="img-fluid rounded"
+          />
+          <button
+            type="button"
+            className="btn btn-sm btn-danger position-absolute top-0 end-0"
+            onClick={() => removeImage(index)}
+            style={{ transform: "translate(50%, -50%)" }}
+          >
+            &times;
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
                   <div className="mb-3">
                     <label className="form-label">Duty Status</label>
