@@ -43,6 +43,101 @@ const Createdrivers = () => {
     product_image: null,
   });
 
+  const handleFileChange2 = async (e) => {
+  const file = e.target.files[0];
+
+  // Save file in formData
+  setFormData((prevData) => ({
+    ...prevData,
+    product_image: file
+  }));
+
+  if (!file) return;
+
+  // ---- OCR API Call ----
+  const ocrData = new FormData();
+  ocrData.append("file", file);
+
+  try {
+    const response = await axios.post(
+      "https://isovia.ca/fms_api/OCRController/ocr_no_truck",
+      ocrData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      }
+    );
+
+    const data = response.data;
+
+    if (data.success) {
+      autoFillDriverForm(data.data);   // 🔥 Auto Fill
+    }
+
+  } catch (error) {
+    console.log("OCR error:", error);
+  }
+};
+
+
+
+const autoFillDriverForm = (ocr) => {
+  let update = {};
+
+  // --- Driving License OCR ----
+  if (ocr.driving_license) {
+    const dl = ocr.driving_license;
+
+    update = {
+      fname: dl.name?.split(" ")[1] || "",
+      lname: dl.name?.split(" ")[2] || "",
+      address1: dl.address || "",
+      documentno: dl.license_number || "",
+      issuedate: dl.issue_date || "",
+      expiarydate: dl.expiry_date || "",
+      dob: dl.dob || "",
+    };
+  }
+
+  // --- PDF OCR (Text Parsing) ----
+  if (ocr.raw_text) {
+    const t = ocr.raw_text;
+
+    update.fname = getValue(t, "Name", 1);
+    update.lname = getValue(t, "Name", 2);
+    update.address1 = getValue(t, "Address", 1);
+    update.city = getValue(t, "City");
+    update.state = getValue(t, "State");
+    update.zip = getValue(t, "Zip");
+
+    update.dob = extractDate(t, "Date of birth") || update.dob;
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    ...update,
+  }));
+};
+
+
+const getValue = (text, key, part = 1) => {
+  try {
+    const line = text.split("\n").find((l) => l.includes(key));
+    if (!line) return "";
+    return line.split(" ").slice(part).join(" ").trim();
+  } catch {
+    return "";
+  }
+};
+
+const extractDate = (text, label) => {
+  const regex = /(\d{4}[-\/]\d{2}[-\/]\d{2})/;
+  const match = text.match(regex);
+  return match ? match[1] : "";
+};
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -74,6 +169,20 @@ const Createdrivers = () => {
   };
   return (
     <div className="content-wrapper" style={{ minHeight: 440 }}>
+
+      <div className="form-group">
+  <label htmlFor="product_image">Upload Licence / PDF</label>
+
+  <input
+    type="file"
+    id="product_image"
+    name="product_image"
+    className="form-control"
+    accept=".jpg,.jpeg,.png,.pdf"
+    onChange={handleFileChange2}  
+  />
+</div>
+
   {/* Content Header (Page header) */}
   <section className="content-header">
     <h1>
