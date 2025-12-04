@@ -37,12 +37,41 @@ const Createtrucks = () => {
     height: '',
     heightunits: '',
     ifta:'',
-    owneroperated:''
+    owneroperated:'',
+    // New fields from cURL request
+    registration_doc: null,
+    registration_expiry: '',
+    insurance_doc: null,
+    insurance_expiry: '',
+    safety_doc: null,
+    safety_expiry: '',
+    permit_doc: null,
+    permit_expiry: '',
+    ifta_doc: null,
+    ifta_expiry: '',
+    ucr_doc: null,
+    ucr_expiry: '',
+    dot_doc: null,
+    dot_expiry: '',
+    irplate_doc: null,
+    irplate_expiry: '',
+    inspection_doc: null,
+    inspection_expiry: '',
+    emergency_contact_doc: null
 });
 
 const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+        setFormData({ ...formData, [name]: checked ? 'YES' : '' });
+    } else {
+        setFormData({ ...formData, [name]: value });
+    }
+};
+
+const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData({ ...formData, [name]: files[0] });
 };
 
 const handleImageChange = (e) => {
@@ -54,19 +83,28 @@ const handleSubmit = (e) => {
 
     const data = new FormData();
     for (let key in formData) {
-        data.append(key, formData[key]);
+        if (formData[key] !== null && formData[key] !== '') {
+            data.append(key, formData[key]);
+        }
     }
 
-    axios.post('https://isovia.ca/fms_api/api/createtrucks', data)
-        .then(response => {
-            console.log('Success:', response.data);
-            // Handle success response
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Handle error
-        });
+    axios.post('https://isovia.ca/fms_api/api/createtrucks', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    })
+    .then(response => {
+        console.log('Success:', response.data);
+        // Handle success response
+        alert('Truck created successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Handle error
+        alert('Error creating truck. Please try again.');
+    });
 };
+
   return (
     <div className="content-wrapper" style={{ minHeight: 440 }}>
   {/* Content Header (Page header) */}
@@ -361,8 +399,8 @@ const handleSubmit = (e) => {
                       defaultValue="YES"
                       name="ifta"
                       id="ifta"
-                      value={formData.ifta}
-                    onChange={handleChange}
+                      checked={formData.ifta === 'YES'}
+                      onChange={handleChange}
                     />
                     <label className="form-check-label" htmlFor="ifta"></label>
                   </div>
@@ -376,8 +414,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="stopnotes"
                     name="stopnotes"
-                    placeholder="Enter 
-          Remarks"
+                    placeholder="Enter Remarks"
                     autoComplete="off"
                     value={formData.stopnotes}
                     onChange={handleChange}
@@ -399,7 +436,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="company"
                     name="company"
-                    placeholder="Enter  Company Name"
+                    placeholder="Enter Company Name"
                     autoComplete="off"
                     value={formData.company}
                     onChange={handleChange}
@@ -423,7 +460,7 @@ const handleSubmit = (e) => {
                         type="button"
                         className="btn btn-secondary"
                         title="Add picture tags"
-                        onclick="alert('Call your custom code here.')"
+                        onClick={() => alert('Call your custom code here.')}
                       >
                         <i className="glyphicon glyphicon-tag" />
                       </button>{" "}
@@ -441,8 +478,7 @@ const handleSubmit = (e) => {
                           id="product_image"
                           name="product_image"
                           type="file"
-                       
-                    onChange={handleImageChange}
+                          onChange={handleImageChange}
                         />
                       </div>
                     </div>
@@ -514,10 +550,10 @@ const handleSubmit = (e) => {
                       defaultValue="YES"
                       name="owneroperated"
                       id="owneroperated"
-                      value={formData.owneroperated}
-                    onChange={handleChange}
+                      checked={formData.owneroperated === 'YES'}
+                      onChange={handleChange}
                     />
-                    <label className="form-check-label" htmlFor="ifta"></label>
+                    <label className="form-check-label" htmlFor="owneroperated"></label>
                   </div>
                 </div>
               </div>
@@ -547,7 +583,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="length"
                     name="length"
-                    placeholder="Enter  Length"
+                    placeholder="Enter Length"
                     autoComplete="off"
                     value={formData.length}
                     onChange={handleChange}
@@ -579,7 +615,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="width"
                     name="width"
-                    placeholder="Enter  Width"
+                    placeholder="Enter Width"
                     autoComplete="off"
                     value={formData.width}
                     onChange={handleChange}
@@ -593,7 +629,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="widthunits"
                     name="widtunits"
-                    value={formData.weightunits}
+                    value={formData.widtunits}
                     onChange={handleChange}
                   >
                     <option value="Feet">Feet</option>
@@ -611,7 +647,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="gps"
                     name="gps"
-                    placeholder="Enter  GPS Device#"
+                    placeholder="Enter GPS Device#"
                     autoComplete="off"
                     value={formData.gps}
                     onChange={handleChange}
@@ -626,7 +662,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="color"
                     name="color"
-                    placeholder="Enter  Color"
+                    placeholder="Enter Color"
                     autoComplete="off"
                     value={formData.color}
                     onChange={handleChange}
@@ -639,9 +675,9 @@ const handleSubmit = (e) => {
                   <input
                     type="text"
                     className="form-control"
-                    id="weigth"
+                    id="weight"
                     name="weight"
-                    placeholder="Enter  weight"
+                    placeholder="Enter weight"
                     autoComplete="off"
                     value={formData.weight}
                     onChange={handleChange}
@@ -653,7 +689,7 @@ const handleSubmit = (e) => {
                   <label htmlFor="store">Max Units</label>
                   <select
                     className="form-control"
-                    id="weigthunits"
+                    id="weightunits"
                     name="weightunits"
                     value={formData.weightunits}
                     onChange={handleChange}
@@ -675,7 +711,7 @@ const handleSubmit = (e) => {
                     className="form-control"
                     id="height"
                     name="height"
-                    placeholder="Enter  height"
+                    placeholder="Enter height"
                     autoComplete="off"
                     value={formData.height}
                     onChange={handleChange}
@@ -697,6 +733,272 @@ const handleSubmit = (e) => {
                     <option value="Meter">Meter</option>
                     <option value="Cms">Centimeter</option>
                   </select>
+                </div>
+              </div>
+
+              {/* New Document Uploads Section */}
+              <div className="col-md-12 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <h4>
+                    <span className="label label-success">Documentation</span>
+                  </h4>
+                </div>
+              </div>
+
+              {/* Registration Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="registration_doc">Registration Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="registration_doc"
+                    name="registration_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="registration_expiry">Registration Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="registration_expiry"
+                    name="registration_expiry"
+                    value={formData.registration_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* Insurance Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="insurance_doc">Insurance Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="insurance_doc"
+                    name="insurance_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="insurance_expiry">Insurance Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="insurance_expiry"
+                    name="insurance_expiry"
+                    value={formData.insurance_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* Safety Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="safety_doc">Safety Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="safety_doc"
+                    name="safety_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="safety_expiry">Safety Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="safety_expiry"
+                    name="safety_expiry"
+                    value={formData.safety_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* Permit Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="permit_doc">Permit Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="permit_doc"
+                    name="permit_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="permit_expiry">Permit Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="permit_expiry"
+                    name="permit_expiry"
+                    value={formData.permit_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* IFTA Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="ifta_doc">IFTA Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="ifta_doc"
+                    name="ifta_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="ifta_expiry">IFTA Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="ifta_expiry"
+                    name="ifta_expiry"
+                    value={formData.ifta_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* UCR Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="ucr_doc">UCR Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="ucr_doc"
+                    name="ucr_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="ucr_expiry">UCR Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="ucr_expiry"
+                    name="ucr_expiry"
+                    value={formData.ucr_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* DOT Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="dot_doc">DOT Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="dot_doc"
+                    name="dot_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="dot_expiry">DOT Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="dot_expiry"
+                    name="dot_expiry"
+                    value={formData.dot_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* IR Plate Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="irplate_doc">IR Plate Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="irplate_doc"
+                    name="irplate_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="irplate_expiry">IR Plate Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="irplate_expiry"
+                    name="irplate_expiry"
+                    value={formData.irplate_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* Inspection Documents */}
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="inspection_doc">Inspection Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="inspection_doc"
+                    name="inspection_doc"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="inspection_expiry">Inspection Expiry</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="inspection_expiry"
+                    name="inspection_expiry"
+                    value={formData.inspection_expiry}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              {/* Emergency Contact Document */}
+              <div className="col-md-12 col-xs-12 pull pull-left">
+                <div className="form-group">
+                  <label htmlFor="emergency_contact_doc">Emergency Contact Document</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="emergency_contact_doc"
+                    name="emergency_contact_doc"
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>

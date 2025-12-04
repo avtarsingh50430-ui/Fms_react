@@ -67,7 +67,7 @@ const Createdrivers = () => {
 
     try {
       const response = await axios.post('https://isovia.ca/fms_api/api/createdrivers', data);
-      setmessage(response.data.message);
+      setmessage(response.data);
     } catch (error) {
       console.error('Error submitting form', error);
     }
@@ -87,17 +87,22 @@ const Createdrivers = () => {
     <div className="row">
       <div className="col-md-12 col-xs-12">
         <div id="messages" />
-        {message&&<div className="alert alert-success alert-dismissible" role="alert">
-          <button
-            type="button"
-            className="close"
-            data-dismiss="alert"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-          {message}
-        </div>}
+      {message?.status && (
+  <div 
+    className={`alert alert-${message.status === 'error' ? 'danger' : 'success'} alert-dismissible`} 
+    role="alert"
+  >
+    <button
+      type="button"
+      className="close"
+      data-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">×</span>
+    </button>
+    {message.message || message}
+  </div>
+)}
         <div className="box">
           <div className="box-header">
             <h3 className="box-title">Add Drivers</h3>

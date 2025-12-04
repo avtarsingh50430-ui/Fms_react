@@ -1,20 +1,18 @@
-
-
 import Header from "./websitefiles/Header";
 import Home from "./websitefiles/Home";
 import Footer from "./websitefiles/Footer";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Contactus from "./websitefiles/Contactus";
-import Aboutus from "./websitefiles/Aboutus";
-import Service from "./websitefiles/Service";
-import Shop from "./websitefiles/Shop";
-import Company from "./websitefiles/Company";
+// import Contactus from "./websitefiles/Contactus";
+// import Aboutus from "./websitefiles/Aboutus";
+// import Service from "./websitefiles/Service";
+// import Shop from "./websitefiles/Shop";
+// import Company from "./websitefiles/Company";
 import { useEffect, useState } from "react";
-import RegistrationForm from "./websitefiles/Registration";
+// import RegistrationForm from "./websitefiles/Registration";
 import Adminheader from "./admindashboard/Adminheader";
 import Dashboard from "./admindashboard/Dashboard";
 import Footeradmin from "./admindashboard/Footer";
-import Login from "./websitefiles/Login";
+// import Login from "./websitefiles/Login";
 import Createorder from "./admindashboard/order/Createorder";
 import Orders from "./admindashboard/order/Orders";
 import Createtrips from "./admindashboard/trips/Createtrips";
@@ -71,7 +69,7 @@ import Createitypes from "./admindashboard/itypes/Create";
 import Createeqptypes from "./admindashboard/eqptypes/Create";
 import Eqptypes from "./admindashboard/eqptypes/Eqptypes";
 import Userinfoset from "./admindashboard/users/Userinfoset";
-import DriverLogin from "./websitefiles/Driverlogin";
+// import DriverLogin from "./websitefiles/Driverlogin";
 import Driverheader from "./Driverdashboard/Driverheader";
 import DriverDashboard from "./Driverdashboard/Dashboard";
 import Assignorder from "./admindashboard/order/Assign";
@@ -104,7 +102,7 @@ import Updateitypes from "./admindashboard/itypes/Update";
 import Updateeqptypes from "./admindashboard/eqptypes/Update";
 import Createagent from "./admindashboard/agent/Create";
 import Agentlist from "./admindashboard/agent/Agentlist";
-import AgentLogin from "./websitefiles/Agentlogin";
+// import AgentLogin from "./websitefiles/Agentlogin";
 import Agentheader from "./Agentdashboard/Agentheader";
 import AgentDashboard from "./Agentdashboard/Dashboard";
 import Incomeagent from "./Agentdashboard/income/Income";
@@ -118,17 +116,17 @@ import GomotiveUsers from "./admindashboard/gomotive/GomotiveUsers";
 import LogTable from "./admindashboard/gomotive/LogTable";
 import CredentialsUI from "./admindashboard/Credential/CredentialsUI";
 import SamsaraDrivers from "./admindashboard/Samsara/SamsaraUsers";
-import Partner from "./websitefiles/Partner";
-import FreightManagement from "./websitefiles/FreightManagement";
-import FleetManagement from "./websitefiles/FleetManagement";
-import News from "./websitefiles/News";
-import Blog from "./websitefiles/Blog";
-import Carrieruploadpdf from "./websitefiles/Carrieruploadpdf";
+// import Partner from "./websitefiles/Partner";
+// import FreightManagement from "./websitefiles/FreightManagement";
+// import FleetManagement from "./websitefiles/FleetManagement";
+// import News from "./websitefiles/News";
+// import Blog from "./websitefiles/Blog";
+// import Carrieruploadpdf from "./websitefiles/Carrieruploadpdf";
 import TripMap from "./admindashboard/livemap";
 import DispatchBoard from "./admindashboard/Dispatch_board";
-import Article1 from "./websitefiles/blogs/Article1";
-import Article2 from "./websitefiles/blogs/Article2";
-import Article3 from "./websitefiles/blogs/Article3";
+// import Article1 from "./websitefiles/blogs/Article1";
+// import Article2 from "./websitefiles/blogs/Article2";
+// import Article3 from "./websitefiles/blogs/Article3";
 import TripViewer from "./admindashboard/trips/TripViewer";
 import SplitRoutes from "./admindashboard/trips/Splitetrip";
 import Driverpaylist from "./admindashboard/accounting/Driverpaylist";
@@ -161,6 +159,32 @@ import AciTripForm from "./admindashboard/borderconnect/AciTripForm";
 import CustomPaperwork from "./admindashboard/CustomPaperwork/CustomPaperwork";
 import DriverCustomPaperwork from "./Driverdashboard/CustomPaperwork/DriverCustomPaperwork";
 import ListCoversheet from "./admindashboard/listCoversheet/ListCoversheet";
+import RevenueExpensesList from "./admindashboard/accounting/RevenueExpenseslist";
+import AccountsPayableReceivableList from "./admindashboard/accounting/AccountsPayableReceivablelist";
+import LocationIncomeList from "./admindashboard/accounting/LocationIncomeList";
+import Bulkuploaddriver from "./admindashboard/drivers/Bulkupload";
+import About from "./websitefiles/About";
+import Partners from "./websitefiles/Partners";
+import IsoviaFreightManagementSystem from "./websitefiles/IsoviaFreightManagementSystem";
+import IsoviaFreightManagementSystem2 from "./websitefiles/IsoviaFreightManagementSystem2";
+import News from "./websitefiles/News";
+import Article1 from "./websitefiles/Article1";
+import Article2 from "./websitefiles/Article2";
+import Article3 from "./websitefiles/Article3";
+import Contactus from "./websitefiles/Contactus";
+import Loginmain from "./websitefiles/Loginmain";
+import Alllogin from "./websitefiles/Alllogin";
+import Adminlogin from "./websitefiles/Adminlogin";
+import Driverlogin from "./websitefiles/Driverlogin";
+import Agentslogin from "./websitefiles/Agentslogin";
+import WebsiteLayout from "./WebsiteLayout";
+import AdminLayout from "./AdminLayout";
+import Registerpage from "./websitefiles/Registerpage";
+import AddTrailerActivity from "./admindashboard/trailors/AddTrailerActivity";
+import TrailerPerformance from "./admindashboard/trailors/TrailerPerformance";
+import CheckHos from "./admindashboard/drivers/Checkhos";
+import Truckbulk from "./admindashboard/trucks/Truckbulk";
+import EldDailyLogs from "./admindashboard/eld/EldDailyLogs";
 
 
 
@@ -178,10 +202,27 @@ function App() {
       <Routes>
 
         {/* website */}
-        <Route path="/" element={<><Header /><Home /><Footer /></>} />
-        <Route path="/contact" element={<><Header /><Contactus /><Footer /></>} />
+       <Route path="/" element={<><WebsiteLayout/>
+<Header /><Home /><Footer />
+</>} />
+        <Route path="/aboutus" element={<><WebsiteLayout/><Header /><About /><Footer /></>} />
+        <Route path="/partner" element={<><WebsiteLayout/><Header /><Partners /><Footer /></>} />
+         <Route path="/freightmanagement" element={<><WebsiteLayout/><Header /><IsoviaFreightManagementSystem /><Footer /></>} />
+          <Route path="/fleetmanagement" element={<><WebsiteLayout/><Header /><IsoviaFreightManagementSystem2 /><Footer /></>} />
+           <Route path="/news" element={<><WebsiteLayout/><Header /><News /><Footer /></>} />
+            <Route path="/Article1" element={<><WebsiteLayout/><Header /><Article1 /><Footer /></>} />
+              <Route path="/Article2" element={<><WebsiteLayout/><Header /><Article2 /><Footer /></>} />
+              <Route path="/Article3" element={<><WebsiteLayout/><Header /><Article3 /><Footer /></>} />
+              <Route path="/contact" element={<><WebsiteLayout/><Header /><Contactus /><Footer /></>} />
+                <Route path="/loginmain" element={<><WebsiteLayout/><Header /><Loginmain /><Footer /></>} />
+                <Route path="/alllogin" element={<><WebsiteLayout/><Header /><Alllogin /><Footer /></>} />
+                  <Route path="/admin-login" element={<><WebsiteLayout/><Header /><Adminlogin /><Footer /></>} />
+                  <Route path="/driver-login" element={<><WebsiteLayout/><Header /><Driverlogin /><Footer /></>} />
+                  <Route path="/agents-login" element={<><WebsiteLayout/><Header /><Agentslogin /><Footer /></>} />
+                   <Route path="/registration" element={<><WebsiteLayout/><Header /><Registerpage /><Footer /></>} />
+         {/* 
         <Route path="/carrier-upload/:formId" element={<><Header /><Carrieruploadpdf /><Footer /></>} />
-        <Route path="/aboutus" element={<><Header /><Aboutus /><Footer /></>} />
+       
         <Route path="/service" element={<><Header /><Service /><Footer /></>} />
         <Route path="/shop" element={<><Header /><Shop /><Footer /></>} />
         <Route path="/company" element={<><Header /><Company /><Footer /></>} />
@@ -193,10 +234,10 @@ function App() {
         <Route path="/Article3" element={<><Header /><Article3 /><Footer /></>} />
         <Route path="/loginagent" element={<><Header /><AgentLogin /><Footer /></>} />
         <Route path="/partner" element={<><Header /><Partner /><Footer /></>} />
-        <Route path="/freightmanagement" element={<><Header /><FreightManagement /><Footer /></>} />
-        <Route path="/fleetmanagement" element={<><Header /><FleetManagement /><Footer /></>} />
-        <Route path="/news" element={<><Header /><News /><Footer /></>} />
-        <Route path="/blog" element={<><Header /><Blog /><Footer /></>} />
+       
+       
+       
+        <Route path="/blog" element={<><Header /><Blog /><Footer /></>} /> */}
  {/*end website */}
 
 {/* Agent */}
@@ -209,7 +250,7 @@ function App() {
           <Route path="/agentgetOrderincome" element={<div className="skin-blue sidebar-mini"><Agentheader /><OrderIncomeList /></div>} />
         <Route path="/agentordertripIncome" element={<div className="skin-blue sidebar-mini"><Agentheader /><OrderTripIncomeList /></div>} />
         <Route path="/agentexpense" element={<div className="skin-blue sidebar-mini"><Agentheader /><Expense /></div>} />
-         <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripIncome /><Footeradmin /></div>} />
+         <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TripIncome /><Footeradmin /></div>} />
          
 
 {/*end Agent */}
@@ -219,121 +260,130 @@ function App() {
 
 
 
-        <Route path="/admin" element={<div className="skin-blue sidebar-mini"><Adminheader /><Dashboard /><Footeradmin /></div>} />
-        <Route path="/hos" element={<div className="skin-blue sidebar-mini"><Adminheader /><HoursOfServiceForm /><Footeradmin /></div>} />
-        <Route path="/hosgetall" element={<div className="skin-blue sidebar-mini"><Adminheader /><VehicleDriverLogs /><Footeradmin /></div>} />
-        <Route path="/driverdutynotification" element={<div className="skin-blue sidebar-mini"><Adminheader /><DriverDutyNotification /><Footeradmin /></div>} />
-        <Route path="/accounting" element={<div className="skin-blue sidebar-mini"><Adminheader /><Dashboardaccounting /><Footeradmin /></div>} />
-        <Route path="/createorder" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createorder /><Footeradmin /></div>} />
-        <Route path="/orderlist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Orders /><Footeradmin /></div>} />
-        <Route path="/orderhistory" element={<div className="skin-blue sidebar-mini"><Adminheader /><Orderhistory /><Footeradmin /></div>} />
-        <Route path="/driverpaylist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Driverpaylist /><Footeradmin /></div>} />
-        <Route path="/netincometable" element={<div className="skin-blue sidebar-mini"><Adminheader /><NetIncomeTable /><Footeradmin /></div>} />
-        <Route path="/assign/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Assignorder /><Footeradmin /></div>} />
-        <Route path="/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Update /><Footeradmin /></div>} />
-        <Route path="/createagent" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createagent /><Footeradmin /></div>} />
-        <Route path="/agentlist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Agentlist /><Footeradmin /></div>} />
-        <Route path="/agentedit/:agentId" element={<div className="skin-blue sidebar-mini"><Adminheader /><Editagent /><Footeradmin /></div>} />
-        <Route path="/gomotive/vehicletable" element={<div className="skin-blue sidebar-mini"><Adminheader /><VehicleTable /><Footeradmin /></div>} />
-        <Route path="/gomotive/gomotiveusers" element={<div className="skin-blue sidebar-mini"><Adminheader /><GomotiveUsers /><Footeradmin /></div>} />
-        <Route path="/gomotive/logtable" element={<div className="skin-blue sidebar-mini"><Adminheader /><LogTable /><Footeradmin /></div>} />
-        {/* <Route path="/gomotive/vehicletable" element={<div className="skin-blue sidebar-mini"><Adminheader /><VehicleTable /><Footeradmin /></div>} /> */}
-        <Route path="/samsara/samsarausers" element={<div className="skin-blue sidebar-mini"><Adminheader /><SamsaraDrivers /><Footeradmin /></div>} />
-        {/* <Route path="/gomotive/logtable" element={<div className="skin-blue sidebar-mini"><Adminheader /><LogTable /><Footeradmin /></div>} /> */}
-        <Route path="/createtrips" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createtrips /><Footeradmin /></div>} />
-        <Route path="/tripsmap" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripMap /><Footeradmin /></div>} />
-        <Route path="/tripviewer/:tripId" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripViewer /><Footeradmin /></div>} />
-        <Route path="/tripsplit/:tripId" element={<div className="skin-blue sidebar-mini"><Adminheader /><SplitRoutes /><Footeradmin /></div>} />
-        <Route path="/DispatchBoard" element={<div className="skin-blue sidebar-mini"><Adminheader /><DispatchBoard /><Footeradmin /></div>} />
-        <Route path="/triplist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Triplist /><Footeradmin /></div>} />
-        <Route path="/trips/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatetrip /><Footeradmin /></div>} />
-        <Route path="trips/assign/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Assigntrip /><Footeradmin /></div>} />
-        <Route path="/invoices" element={<div className="skin-blue sidebar-mini"><Adminheader /><Invoices /><Footeradmin /></div>} />
-        <Route path="/profile" element={<div className="skin-blue sidebar-mini"><Adminheader /><ProfileInfo /><Footeradmin /></div>} />
-        <Route path="/trailors" element={<div className="skin-blue sidebar-mini"><Adminheader /><Trailors /><Footeradmin /></div>} />
-        <Route path="/configurations" element={<div className="skin-blue sidebar-mini"><Adminheader /><CredentialsUI /><Footeradmin /></div>} />
-        <Route path="/trailors/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Create /><Footeradmin /></div>} />
-        <Route path="/trailors/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatetrailors /><Footeradmin /></div>} />
-        <Route path="/trucks" element={<div className="skin-blue sidebar-mini"><Adminheader /><Trucks /><Footeradmin /></div>} />
-        <Route path="/trucks/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createtrucks /><Footeradmin /></div>} />
-        <Route path="/trucks/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatetrucks /><Footeradmin /></div>} />
-        <Route path="/owners" element={<div className="skin-blue sidebar-mini"><Adminheader /><Owners /><Footeradmin /></div>} />
-        <Route path="/owners/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createowners /><Footeradmin /></div>} />
-        <Route path="/owners/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateowners /><Footeradmin /></div>} />
-        <Route path="/drivers" element={<div className="skin-blue sidebar-mini"><Adminheader /><Drivers /><Footeradmin /></div>} />
-        <Route path="/drivers/hos/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><DriverHOS /><Footeradmin /></div>} />
-        <Route path="/drivers/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createdrivers /><Footeradmin /></div>} />
-        <Route path="/drivers/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatedrivers /><Footeradmin /></div>} />
-        <Route path="/fleets" element={<div className="skin-blue sidebar-mini"><Adminheader /><Fleets /><Footeradmin /></div>} />
-        <Route path="/fleets/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createfleets /><Footeradmin /></div>} />
-        <Route path="/fleets/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatefleets /><Footeradmin /></div>} />
-        <Route path="/employees" element={<div className="skin-blue sidebar-mini"><Adminheader /><Employees /><Footeradmin /></div>} />
-        <Route path="/employees/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createemployees /><Footeradmin /></div>} />
-        <Route path="/employees/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateemployees /><Footeradmin /></div>} />
-        <Route path="/vendors" element={<div className="skin-blue sidebar-mini"><Adminheader /><Vendors /><Footeradmin /></div>} />
-        <Route path="/vendors/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createvendors /><Footeradmin /></div>} />
-        <Route path="/vendors/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatevendors /><Footeradmin /></div>} />
-        <Route path="/carriers" element={<div className="skin-blue sidebar-mini"><Adminheader /><Carriers /><Footeradmin /></div>} />
-        <Route path="/carriers/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createcarriers /><Footeradmin /></div>} />
-        <Route path="/carriers/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatecarriers /><Footeradmin /></div>} />
-        <Route path="/yards" element={<div className="skin-blue sidebar-mini"><Adminheader /><Yardsdata /><Footeradmin /></div>} />
-        <Route path="/customers" element={<div className="skin-blue sidebar-mini"><Adminheader /><Customers /><Footeradmin /></div>} />
-        <Route path="/customers/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createcustomer /><Footeradmin /></div>} />
-        <Route path="/customers/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatecustomer /><Footeradmin /></div>} />
-        <Route path="/factorings" element={<div className="skin-blue sidebar-mini"><Adminheader /><Factorings /><Footeradmin /></div>} />
-        <Route path="/factorings/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createfactorings /><Footeradmin /></div>} />
-        <Route path="/factorings/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatefactorings /><Footeradmin /></div>} />
-        <Route path="/brokers" element={<div className="skin-blue sidebar-mini"><Adminheader /><Brokers /><Footeradmin /></div>} />
-        <Route path="/brokers/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createbrokers /><Footeradmin /></div>} />
-        <Route path="/brokers/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatebrokers /><Footeradmin /></div>} />
-        <Route path="/importers" element={<div className="skin-blue sidebar-mini"><Adminheader /><Importers /><Footeradmin /></div>} />
-        <Route path="/importers/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createimporters /><Footeradmin /></div>} />
-        <Route path="/importers/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateimporters /><Footeradmin /></div>} />
-        <Route path="/extracharges" element={<div className="skin-blue sidebar-mini"><Adminheader /><Extracharges /><Footeradmin /></div>} />
-        <Route path="/extracharges/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createextracharges /><Footeradmin /></div>} />
-        <Route path="/extracharges/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateextracharges /><Footeradmin /></div>} />
-        <Route path="/terms" element={<div className="skin-blue sidebar-mini"><Adminheader /><Terms /><Footeradmin /></div>} />
-        <Route path="/terms/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createterms /><Footeradmin /></div>} />
-        <Route path="/terms/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateterms /><Footeradmin /></div>} />
-        <Route path="/mtypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Mtypes /><Footeradmin /></div>} />
-        <Route path="/mtypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createmtypes /><Footeradmin /></div>} />
-        <Route path="/mtypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatemtype /><Footeradmin /></div>} />
-        <Route path="/discounttypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Discounttypes /><Footeradmin /></div>} />
-        <Route path="/discounttypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Creatediscounttypes /><Footeradmin /></div>} />
-        <Route path="/discounttypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatediscounttypes /><Footeradmin /></div>} />
-        <Route path="/mplans" element={<div className="skin-blue sidebar-mini"><Adminheader /><Mplans /><Footeradmin /></div>} />
-        <Route path="/mplans/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createmplans /><Footeradmin /></div>} />
-        <Route path="/mplans/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatemplans /><Footeradmin /></div>} />
-        <Route path="/doctypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Doctypes /><Footeradmin /></div>} />
-        <Route path="/doctypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createdoctypes /><Footeradmin /></div>} />
-        <Route path="/doctypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updatedoctypes /><Footeradmin /></div>} />
-        <Route path="/ads" element={<div className="skin-blue sidebar-mini"><Adminheader /><Ads /><Footeradmin /></div>} />
-        <Route path="/ads/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createads /><Footeradmin /></div>} />
-        <Route path="/ads/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateads /><Footeradmin /></div>} />
-        <Route path="/etypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Etypes /><Footeradmin /></div>} />
-        <Route path="/etypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createetypes /><Footeradmin /></div>} />
-        <Route path="/etypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateetypes /><Footeradmin /></div>} />
-        <Route path="/itypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Itypes /><Footeradmin /></div>} />
-        <Route path="/itypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createitypes /><Footeradmin /></div>} />
-        <Route path="/itypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateitypes /><Footeradmin /></div>} />
-        <Route path="/eqptypes" element={<div className="skin-blue sidebar-mini"><Adminheader /><Eqptypes /><Footeradmin /></div>} />
-        <Route path="/eqptypes/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createeqptypes /><Footeradmin /></div>} />
-        <Route path="/eqptypes/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><Updateeqptypes /><Footeradmin /></div>} />
-        <Route path="/locations" element={<div className="skin-blue sidebar-mini"><Adminheader /><Location /><Footeradmin /></div>} />
-        <Route path="/locations/create" element={<div className="skin-blue sidebar-mini"><Adminheader /><Createlocation /><Footeradmin /></div>} />
-        <Route path="/locations/update/:id" element={<div className="skin-blue sidebar-mini"><Adminheader /><UpdateLocation /><Footeradmin /></div>} />
-        <Route path="/users/setting" element={<div className="skin-blue sidebar-mini"><Adminheader /><Userinfoset /><Footeradmin /></div>} />
-        <Route path="/financeManager" element={<div className="skin-blue sidebar-mini"><Adminheader /><FinanceManager /><Footeradmin /></div>} />
-        <Route path="/getOrderincome" element={<div className="skin-blue sidebar-mini"><Adminheader /><OrderIncomeList /><Footeradmin /></div>} />
-        <Route path="/ordertripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><OrderTripIncomeList /><Footeradmin /></div>} />
-        <Route path="/getexpense" element={<div className="skin-blue sidebar-mini"><Adminheader /><Expense /><Footeradmin /></div>} />
-        <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><Adminheader /><TripIncome /><Footeradmin /></div>} />
-        <Route path="/iftalist" element={<div className="skin-blue sidebar-mini"><Adminheader /><Iftalisting /><Footeradmin /></div>} />
-        <Route path="/ifta" element={<div className="skin-blue sidebar-mini"><Adminheader /><Ifta /><Footeradmin /></div>} />
-        <Route path="/borderconnect/acetripform" element={<div className="skin-blue sidebar-mini"><Adminheader /><AceTripForm /><Footeradmin /></div>} />
-        <Route path="/borderconnect/acitripform" element={<div className="skin-blue sidebar-mini"><Adminheader /><AciTripForm /><Footeradmin /></div>} />
-        <Route path="/custompage" element={<div className="skin-blue sidebar-mini"><Adminheader /><CustomPaperwork /><Footeradmin /></div>} />
-        <Route path="/listcoversheet" element={<div className="skin-blue sidebar-mini"><Adminheader /><ListCoversheet /><Footeradmin /></div>} />
+        <Route path="/admin" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Dashboard /><Footeradmin /></div>} />
+        <Route path="/hos" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><HoursOfServiceForm /><Footeradmin /></div>} />
+        <Route path="/addTrailerActivity" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AddTrailerActivity /><Footeradmin /></div>} />
+        <Route path="/trailerPerformance" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TrailerPerformance /><Footeradmin /></div>} />
+        <Route path="/checkhos" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><CheckHos /><Footeradmin /></div>} />
+        <Route path="/hosgetall" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><VehicleDriverLogs /><Footeradmin /></div>} />
+        <Route path="/driverdutynotification" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><DriverDutyNotification /><Footeradmin /></div>} />
+        <Route path="/accounting" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Dashboardaccounting /><Footeradmin /></div>} />
+        <Route path="/createorder" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createorder /><Footeradmin /></div>} />
+        <Route path="/orderlist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Orders /><Footeradmin /></div>} />
+        <Route path="/orderhistory" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Orderhistory /><Footeradmin /></div>} />
+        <Route path="/driverpaylist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Driverpaylist /><Footeradmin /></div>} />
+        <Route path="/netincometable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><NetIncomeTable /><Footeradmin /></div>} />
+        <Route path="/assign/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Assignorder /><Footeradmin /></div>} />
+        <Route path="/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Update /><Footeradmin /></div>} />
+        <Route path="/createagent" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createagent /><Footeradmin /></div>} />
+        <Route path="/agentlist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Agentlist /><Footeradmin /></div>} />
+        <Route path="/agentedit/:agentId" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Editagent /><Footeradmin /></div>} />
+        <Route path="/gomotive/vehicletable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><VehicleTable /><Footeradmin /></div>} />
+        <Route path="/gomotive/gomotiveusers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><GomotiveUsers /><Footeradmin /></div>} />
+        <Route path="/gomotive/logtable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><LogTable /><Footeradmin /></div>} />
+        {/* <Route path="/gomotive/vehicletable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><VehicleTable /><Footeradmin /></div>} /> */}
+        <Route path="/samsara/samsarausers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><SamsaraDrivers /><Footeradmin /></div>} />
+        {/* <Route path="/gomotive/logtable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><LogTable /><Footeradmin /></div>} /> */}
+        <Route path="/createtrips" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createtrips /><Footeradmin /></div>} />
+        <Route path="/tripsmap" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TripMap /><Footeradmin /></div>} />
+        <Route path="/tripviewer/:tripId" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TripViewer /><Footeradmin /></div>} />
+        <Route path="/tripsplit/:tripId" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><SplitRoutes /><Footeradmin /></div>} />
+        <Route path="/DispatchBoard" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><DispatchBoard /><Footeradmin /></div>} />
+        <Route path="/triplist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Triplist /><Footeradmin /></div>} />
+        <Route path="/trips/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatetrip /><Footeradmin /></div>} />
+        <Route path="trips/assign/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Assigntrip /><Footeradmin /></div>} />
+        <Route path="/invoices" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Invoices /><Footeradmin /></div>} />
+        <Route path="/profile" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><ProfileInfo /><Footeradmin /></div>} />
+        <Route path="/trailors" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Trailors /><Footeradmin /></div>} />
+        <Route path="/configurations" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><CredentialsUI /><Footeradmin /></div>} />
+        <Route path="/trailors/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Create /><Footeradmin /></div>} />
+        <Route path="/trailors/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatetrailors /><Footeradmin /></div>} />
+        <Route path="/trucks" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Trucks /><Footeradmin /></div>} />
+        <Route path="/truckbulk" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Truckbulk /><Footeradmin /></div>} />
+        <Route path="/trucks/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createtrucks /><Footeradmin /></div>} />
+        <Route path="/trucks/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatetrucks /><Footeradmin /></div>} />
+        <Route path="/owners" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Owners /><Footeradmin /></div>} />
+        <Route path="/owners/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createowners /><Footeradmin /></div>} />
+        <Route path="/owners/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateowners /><Footeradmin /></div>} />
+        <Route path="/drivers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Drivers /><Footeradmin /></div>} />
+        <Route path="/drivers/hos/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><DriverHOS /><Footeradmin /></div>} />
+        <Route path="/drivers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createdrivers /><Footeradmin /></div>} />
+        <Route path="/drivers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatedrivers /><Footeradmin /></div>} />
+        <Route path="/fleets" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Fleets /><Footeradmin /></div>} />
+        <Route path="/fleets/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createfleets /><Footeradmin /></div>} />
+        <Route path="/fleets/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatefleets /><Footeradmin /></div>} />
+        <Route path="/employees" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Employees /><Footeradmin /></div>} />
+        <Route path="/employees/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createemployees /><Footeradmin /></div>} />
+        <Route path="/employees/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateemployees /><Footeradmin /></div>} />
+        <Route path="/vendors" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Vendors /><Footeradmin /></div>} />
+        <Route path="/vendors/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createvendors /><Footeradmin /></div>} />
+        <Route path="/vendors/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatevendors /><Footeradmin /></div>} />
+        <Route path="/carriers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Carriers /><Footeradmin /></div>} />
+        <Route path="/carriers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createcarriers /><Footeradmin /></div>} />
+        <Route path="/carriers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatecarriers /><Footeradmin /></div>} />
+        <Route path="/yards" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Yardsdata /><Footeradmin /></div>} />
+        <Route path="/customers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Customers /><Footeradmin /></div>} />
+        <Route path="/customers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createcustomer /><Footeradmin /></div>} />
+        <Route path="/customers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatecustomer /><Footeradmin /></div>} />
+        <Route path="/factorings" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Factorings /><Footeradmin /></div>} />
+        <Route path="/factorings/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createfactorings /><Footeradmin /></div>} />
+        <Route path="/factorings/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatefactorings /><Footeradmin /></div>} />
+        <Route path="/brokers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Brokers /><Footeradmin /></div>} />
+        <Route path="/brokers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createbrokers /><Footeradmin /></div>} />
+        <Route path="/brokers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatebrokers /><Footeradmin /></div>} />
+        <Route path="/importers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Importers /><Footeradmin /></div>} />
+        <Route path="/importers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createimporters /><Footeradmin /></div>} />
+        <Route path="/importers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateimporters /><Footeradmin /></div>} />
+        <Route path="/extracharges" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Extracharges /><Footeradmin /></div>} />
+        <Route path="/extracharges/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createextracharges /><Footeradmin /></div>} />
+        <Route path="/extracharges/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateextracharges /><Footeradmin /></div>} />
+        <Route path="/terms" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Terms /><Footeradmin /></div>} />
+        <Route path="/terms/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createterms /><Footeradmin /></div>} />
+        <Route path="/terms/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateterms /><Footeradmin /></div>} />
+        <Route path="/mtypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Mtypes /><Footeradmin /></div>} />
+        <Route path="/mtypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createmtypes /><Footeradmin /></div>} />
+        <Route path="/mtypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatemtype /><Footeradmin /></div>} />
+        <Route path="/discounttypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Discounttypes /><Footeradmin /></div>} />
+        <Route path="/discounttypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Creatediscounttypes /><Footeradmin /></div>} />
+        <Route path="/discounttypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatediscounttypes /><Footeradmin /></div>} />
+        <Route path="/mplans" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Mplans /><Footeradmin /></div>} />
+        <Route path="/mplans/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createmplans /><Footeradmin /></div>} />
+        <Route path="/mplans/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatemplans /><Footeradmin /></div>} />
+        <Route path="/doctypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Doctypes /><Footeradmin /></div>} />
+        <Route path="/doctypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createdoctypes /><Footeradmin /></div>} />
+        <Route path="/doctypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatedoctypes /><Footeradmin /></div>} />
+        <Route path="/ads" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Ads /><Footeradmin /></div>} />
+        <Route path="/ads/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createads /><Footeradmin /></div>} />
+        <Route path="/ads/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateads /><Footeradmin /></div>} />
+        <Route path="/etypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Etypes /><Footeradmin /></div>} />
+        <Route path="/etypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createetypes /><Footeradmin /></div>} />
+        <Route path="/etypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateetypes /><Footeradmin /></div>} />
+        <Route path="/itypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Itypes /><Footeradmin /></div>} />
+        <Route path="/itypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createitypes /><Footeradmin /></div>} />
+        <Route path="/itypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateitypes /><Footeradmin /></div>} />
+        <Route path="/eqptypes" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Eqptypes /><Footeradmin /></div>} />
+        <Route path="/eqptypes/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createeqptypes /><Footeradmin /></div>} />
+        <Route path="/eqptypes/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updateeqptypes /><Footeradmin /></div>} />
+        <Route path="/locations" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Location /><Footeradmin /></div>} />
+        <Route path="/locations/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createlocation /><Footeradmin /></div>} />
+        <Route path="/locations/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><UpdateLocation /><Footeradmin /></div>} />
+        <Route path="/users/setting" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Userinfoset /><Footeradmin /></div>} />
+        <Route path="/financeManager" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><FinanceManager /><Footeradmin /></div>} />
+        <Route path="/getOrderincome" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><OrderIncomeList /><Footeradmin /></div>} />
+        <Route path="/ordertripIncome" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><OrderTripIncomeList /><Footeradmin /></div>} />
+        <Route path="/getexpense" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Expense /><Footeradmin /></div>} />
+        <Route path="/gettripIncome" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TripIncome /><Footeradmin /></div>} />
+        <Route path="/iftalist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Iftalisting /><Footeradmin /></div>} />
+        <Route path="/ifta" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Ifta /><Footeradmin /></div>} />
+        <Route path="/borderconnect/acetripform" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AceTripForm /><Footeradmin /></div>} />
+        <Route path="/borderconnect/acitripform" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AciTripForm /><Footeradmin /></div>} />
+        <Route path="/custompage" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><CustomPaperwork /><Footeradmin /></div>} />
+        <Route path="/listcoversheet" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><ListCoversheet /><Footeradmin /></div>} />
+        <Route path="/revenuerxpenseslist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><RevenueExpensesList /><Footeradmin /></div>} />
+        <Route path="/accountspayablereceivablelist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AccountsPayableReceivableList /><Footeradmin /></div>} />
+        <Route path="/locationIncomelist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><LocationIncomeList /><Footeradmin /></div>} />
+        <Route path="/driverbulkupload" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Bulkuploaddriver /><Footeradmin /></div>} />
+        <Route path="/eldDailyLogs" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><EldDailyLogs /><Footeradmin /></div>} />
       {/*end admin panel */}
 
 

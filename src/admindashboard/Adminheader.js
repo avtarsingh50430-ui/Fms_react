@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom';
+import AdminLayout from '../AdminLayout';
 
 const Adminheader = () => {
   // useEffect(() => {
@@ -51,7 +52,9 @@ const Adminheader = () => {
 </header>
 
 <Sidebar/>
+
 </>
+
   )
 }
 

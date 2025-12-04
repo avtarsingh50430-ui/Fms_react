@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (!loginData || (loginData.role !== 'admin' && loginData.role !== 'agent')) {
-      navigate('/login');
+      navigate('/alllogin');
     }
   }, [update, navigate]);
 
@@ -53,6 +53,8 @@ const Sidebar = () => {
           </li>
 
           <li className="nav-item"><Link className="nav-link" to="/driverpaylist"><i className="fa fa-user" /> <span>Driver pay list</span></Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/driverbulkupload"><i className="fa fa-user" /> <span>Driver Bulk Upload</span></Link></li>
+          <li className="nav-item"><Link className="nav-link" to="/truckbulk"><i className="fa fa-user" /> <span>Truck Bulk Upload</span></Link></li>
           <li className="nav-item"><Link className="nav-link" to="/financeManager"><i className="fa fa-user" /> <span>financeManager</span></Link></li>
           <li className="nav-item"><Link className="nav-link" to="/getOrderincome"><i className="fa fa-user" /> <span>Order Income</span></Link></li>
           <li className="nav-item"><Link className="nav-link" to="/ordertripIncome"><i className="fa fa-user" /> <span>Order Trip Income</span></Link></li>
@@ -65,6 +67,7 @@ const Sidebar = () => {
           <li className="nav-item"><Link className="nav-link" to={'/borderconnect/acitripform'}><i className="fa fa-circle-o" />Border Connect ACI </Link></li>
           <li className="nav-item"><Link className="nav-link" to={'/custompage'}><i className="fa fa-circle-o" />Custom Page </Link></li>
           <li className="nav-item"><Link className="nav-link" to={'/listcoversheet'}><i className="fa fa-circle-o" />list cover sheet</Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/trailerPerformance'}><i className="fa fa-circle-o" />Trailer Performance</Link></li>
           
           <li className="nav-item" id="iftaMenu">
             <Link className="nav-link" to="/iftalist">

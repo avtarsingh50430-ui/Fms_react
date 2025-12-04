@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom';
 import AutoLiveLocationSender from './dutystatus/AutoLiveLocationSender';
+import AdminLayout from '../AdminLayout';
 
 const Driverheader = () => {
   useEffect(() => {
@@ -25,6 +26,7 @@ const Driverheader = () => {
   }, []);
 
   return (<>
+  <AdminLayout>
 <header className="main-header">
   <AutoLiveLocationSender/>
   {/* Logo */}
@@ -53,6 +55,7 @@ const Driverheader = () => {
 </header>
 
 <Sidebar/>
+</AdminLayout>
 </>
   )
 }
