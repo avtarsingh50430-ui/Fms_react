@@ -42,7 +42,7 @@ const Createdrivers = () => {
     qb: '',
     product_image: null,
   });
-
+  const [selectedFile, setSelectedFile] = useState(null);
   const handleFileChange2 = async (e) => {
   const file = e.target.files[0];
 
@@ -86,20 +86,38 @@ const Createdrivers = () => {
 const autoFillDriverForm = (ocr) => {
   let update = {};
 
-  // --- Driving License OCR ----
-  if (ocr.driving_license) {
-    const dl = ocr.driving_license;
+if (ocr.driving_license) {
+  const dl = ocr.driving_license;
 
-    update = {
-      fname: dl.name?.split(" ")[1] || "",
-      lname: dl.name?.split(" ")[2] || "",
-      address1: dl.address || "",
-      documentno: dl.license_number || "",
-      issuedate: dl.issue_date || "",
-      expiarydate: dl.expiry_date || "",
-      dob: dl.dob || "",
-    };
-  }
+  // NAME FIX
+  const fullName = dl.name || "";
+  const nameParts = fullName.split(" ");
+  const fname = nameParts[0] || "";
+  const lname = nameParts.slice(1).join(" ") || "";
+
+  // ADDRESS FIX
+  const address = dl.address || "";
+  const addressParts = address.split(",");
+
+  const address1 = addressParts[0]?.trim() || ""; // 57 Peppermint Close
+  const city = addressParts[1]?.trim() || "";     // Brampton
+  const state = addressParts[2]?.trim().toUpperCase() || ""; // ON
+  const zip = addressParts[3]?.trim().toUpperCase() || "";   // L6P 3C7
+
+  update = {
+    fname,
+    lname,
+    address1,
+    city,
+    state,
+    zip,
+    documentno: dl.license_number || "",
+    issuedate: dl.issue_date || "",
+    expiarydate: dl.expiry_date || "",
+    dob: dl.dob || "",
+  };
+}
+
 
   // --- PDF OCR (Text Parsing) ----
   if (ocr.raw_text) {
@@ -170,18 +188,31 @@ const extractDate = (text, label) => {
   return (
     <div className="content-wrapper" style={{ minHeight: 440 }}>
 
-      <div className="form-group">
+    <div className="form-group">
   <label htmlFor="product_image">Upload Licence / PDF</label>
 
-  <input
-    type="file"
-    id="product_image"
-    name="product_image"
-    className="form-control"
-    accept=".jpg,.jpeg,.png,.pdf"
-    onChange={handleFileChange2}  
-  />
+  <div className="input-group">
+    <input
+      type="file"
+      id="product_image"
+      name="product_image"
+      accept=".png,.jpg,.jpeg,.pdf"
+      className="form-control"
+      onChange={(e) => setSelectedFile(e)}
+    />
+
+    <span className="input-group-btn">
+      <button
+        type="button"
+        className="btn btn-success"
+        onClick={() => handleFileChange2(selectedFile)}
+      >
+        Scan OCR
+      </button>
+    </span>
+  </div>
 </div>
+
 
   {/* Content Header (Page header) */}
   <section className="content-header">
