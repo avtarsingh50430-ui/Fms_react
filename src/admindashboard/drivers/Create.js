@@ -207,7 +207,7 @@ const extractDate = (text, label) => {
         className="btn btn-success"
         onClick={() => handleFileChange2(selectedFile)}
       >
-        Scan OCR
+        Scan OCR 
       </button>
     </span>
   </div>
