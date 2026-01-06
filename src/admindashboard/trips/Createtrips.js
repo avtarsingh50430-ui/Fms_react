@@ -8,6 +8,8 @@ import { toast } from 'react-toastify'
 
 const Createtrips = () => {
   const navigate = useNavigate();
+  const [ocrRaw, setOcrRaw] = useState(null);
+
 const [shipments, setShipments] = useState([{
     commodity: [""],
     weight: [""],
@@ -148,59 +150,87 @@ const handleRemoveRowFromShipment = (shipmentIndex, rowIndex) => {
     updatedStops[index][field] = value;
     setStops(updatedStops);
   };
-  const [formData, setFormData] = useState({
-     mode:'LOG',
-    company: "",
-    customerorderno: "",
-    shipmenttype: "",
-    commission: "",
-    customer_id: "",
-    loadtype: "",
-    frieghton: "",
-    salesman: "",
-    scaleticketno: "",
-    pickup_from: "",
-    pickup_address: "",
-    pickupdate: "",
-    pickuptime: "",
-    pickup_refno: "",
-    pickup_desc: "",
-    delivery: "",
-    delivery_address: "",
-    deliverydate: "",
-    deliverytime: "",
-    delivery_refno: "",
-    dappointment: "",
-    delivery_desc: "",
-    lat: "",
-    lng: "",
-    source_lat: "",
-    source_lng: "",
-    commodity: [""], 
-    weight: [""],
-    unit: [""],
-    package: [""],
-    trailortype: "",
-    manifest: "",
-    hazmat: "",
-    addlcharge: "",
-    appt: "",
-    pip: "",
-    ctpat: "",
-    loadno: "",
-    rate: "",
-    ratevalue: "",
-    gross_amount: "",
-    hst: "",
-    hstamount: "",
-    cst: "",
-    cstamount: "",
-    net_amount: "",
-  });
+const [formData, setFormData] = useState({
+  mode: "LOG",
+
+  company: "",
+  customerorderno: "",
+  shipmenttype: "",
+  commission: "",
+  customer_id: "",
+
+  loadtype: "",
+  frieghton: "",
+  salesman: "",
+  scaleticketno: "",
+
+  pickup_from: "",
+  pickup_address: "",
+  pickupdate: "",
+  pickuptime: "",
+  pickup_refno: "",
+  pickup_desc: "",
+
+  delivery: "",
+  delivery_address: "",
+  deliverydate: "",
+  deliverytime: "",
+  delivery_refno: "",
+  dappointment: "NO",   // ✅ ADD default
+  delivery_desc: "",
+
+  lat: "",
+  lng: "",
+  source_lat: "",
+  source_lng: "",
+
+  commodity: [""],
+  weight: [""],
+  unit: [""],           // ✅ REQUIRED
+  package: [""],
+
+  trailortype: "",
+  manifest: "NO",
+  hazmat: "NO",
+  addlcharge: "0",
+  appt: "NO",
+  pip: "NO",
+  ctpat: "NO",
+
+  loadno: "",
+
+  rate: "",
+  ratevalue: "",
+  gross_amount: "",
+  hst: "",
+  hstamount: "",
+  cst: "",
+  cstamount: "",
+  net_amount: "",
+});
+
 
 const[messageres,setmessage]=useState()
 const[popup,setpopup]=useState(false)
 const[popup1,setpopup1]=useState(false)
+
+const normalizeShipments = () => {
+  return shipments.map((s) => ({
+    commodity: s.commodity,
+    weight: s.weight,
+    unit: s.unit,
+    package: s.package,
+
+    trailortype: s.trailortype || formData.trailortype || "",
+    manifest: s.manifest || "NO",
+    hazmat: s.hazmat || "NO",
+    addlcharge: s.addlcharge || "0",
+    appt: s.appt || "NO",
+    pip: s.pip || "NO",
+    ctpat: s.ctpat || "NO",
+  }));
+};
+
 const handleInputChange = (e) => {
   const { name, value } = e.target;
 
@@ -234,6 +264,82 @@ const handleInputChange = (e) => {
       if (["gross_amount", "hst", "cst","rate","ratevalue"].includes(name)) {
         calculateAmounts(name, value);
       }
+};
+
+
+const uploadOcrFile = async (file) => {
+  const form = new FormData();
+  form.append("file", file);
+
+  try {
+    const res = await axios.post(
+      "https://isovia.ca/fms_api/OCRController/ocr_no_truck",
+      form
+    );
+
+    if (res.data?.success) {
+      setOcrRaw(res.data.data);
+      applyOCRToAllFields(res.data.data);
+    }
+  } catch (e) {
+    console.error("OCR failed", e);
+  }
+};
+
+const flattenObject = (obj, prefix = "", res = {}) => {
+  for (let key in obj) {
+    const value = obj[key];
+    const newKey = prefix ? `${prefix}_${key}` : key;
+
+    if (typeof value === "object" && value !== null) {
+      flattenObject(value, newKey, res);
+    } else {
+      res[newKey.toLowerCase()] = String(value);
+    }
+  }
+  return res;
+};
+
+
+
+const applyOCRToAllFields = (ocrData) => {
+  if (!ocrData) return;
+
+  const flatOCR = flattenObject(ocrData);
+
+  setFormData((prev) => {
+    const updated = { ...prev };
+
+    Object.keys(updated).forEach((field) => {
+      // agar field already filled hai → skip
+      if (
+        updated[field] !== "" &&
+        updated[field] !== null &&
+        updated[field]?.length !== 0
+      ) return;
+
+      const matchKey = Object.keys(flatOCR).find((k) =>
+        k.includes(field.toLowerCase())
+      );
+
+      if (matchKey) {
+        // array fields
+        if (Array.isArray(updated[field])) {
+          updated[field] = [flatOCR[matchKey]];
+        }
+        // number fields
+        else if (!isNaN(updated[field])) {
+          updated[field] = flatOCR[matchKey].replace(/[^\d.]/g, "");
+        }
+        // text fields
+        else {
+          updated[field] = flatOCR[matchKey].substring(0, 300);
+        }
+      }
+    });
+
+    return updated;
+  });
 };
 
 
@@ -297,53 +403,49 @@ const [rows, setRows] = useState([]);
 
 let handleonSubmit = async (e) => {
   e.preventDefault();
-  
-  const form = new FormData();
-    // Append regular fields
-    Object.keys(formData).forEach((key) => {
-      if (Array.isArray(formData[key])) {
-        formData[key].forEach((item) => form.append(`${key}[]`, item)); // Append arrays
-      } else {
-        form.append(key, formData[key]);
-      }
-    });
 
-    form.append('userid', userdata.id);
-    form.append('Location12',JSON.stringify(stops));
-    form.append('mode', "LOG");
-      form.append('shipments', JSON.stringify(shipments));
+  const form = new FormData();
+
+  // 🔹 All normal fields
+  Object.keys(formData).forEach((key) => {
+    if (Array.isArray(formData[key])) {
+      formData[key].forEach((item) => {
+        form.append(`${key}[]`, item);
+      });
+    } else {
+      form.append(key, formData[key]);
+    }
+  });
+
+  // 🔹 REQUIRED BY BACKEND
+  form.append("userid", userdata.id);
+  form.append("mode", "LOG");
+
+  // 🔹 Stops
+  form.append("Location12", JSON.stringify(stops));
+
+  // 🔹 Shipments (FIXED)
+  form.append("shipments", JSON.stringify(normalizeShipments()));
 
   try {
-    const response = await axios.post('https://isovia.ca/fms_api/api/create', form);
-    setmessage(response.data.message);
-    toast.success('Successfully created', {
+    const response = await axios.post(
+      "https://isovia.ca/fms_api/api/create",
+      form
+    );
+
+    toast.success("Successfully created", {
       position: "top-right",
       autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
       theme: "colored",
     });
-   
-  
-    navigate(-1)
+
+    navigate(-1);
   } catch (error) {
-    console.error('Error:', error);
-    toast.error(error, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
-   
+    console.error(error);
+    toast.error("Trip creation failed");
   }
-}
+};
+
 let handleSaveAndAssign = async (e) => {
   e.preventDefault();
   
@@ -356,6 +458,7 @@ let handleSaveAndAssign = async (e) => {
         form.append(key, formData[key]);
       }
     });
+form.append("shipments", JSON.stringify(normalizeShipments()));
 
     form.append('userid', userdata.id);
     form.append('Location12',JSON.stringify(stops));
@@ -477,6 +580,22 @@ const handleRemoveRow = (index) => {
 
   return (
     <div className='content-wrapper'><section className="content-header">
+   <div className="form-group">
+  <label htmlFor="product_image">Upload Licence / PDF</label>
+
+  <div className="input-group">
+    <input
+      type="file"
+      id="product_image"
+      name="product_image"
+      accept=".png,.jpg,.jpeg,.pdf"
+      className="form-control"
+      onChange={(e) => uploadOcrFile(e.target.files[0])}
+    />
+  </div>
+</div>
+
+
     <h1>
       Manage
       <small>Trips</small>

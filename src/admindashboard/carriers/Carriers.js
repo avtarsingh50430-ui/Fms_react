@@ -12,7 +12,7 @@ const Carriers = () => {
 
   useEffect(() => {
     axios.get('https://isovia.ca/fms_api/api/fetchcarriersProductData')
-      .then(res => setData(res.data))
+      .then(res => setData(res.data.data))
       .catch(error => console.log(error));
   }, []);
 

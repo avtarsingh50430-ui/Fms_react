@@ -185,6 +185,16 @@ import TrailerPerformance from "./admindashboard/trailors/TrailerPerformance";
 import CheckHos from "./admindashboard/drivers/Checkhos";
 import Truckbulk from "./admindashboard/trucks/Truckbulk";
 import EldDailyLogs from "./admindashboard/eld/EldDailyLogs";
+import TruckComplianceChecklist from "./admindashboard/trucks/TruckComplianceChecklist";
+import TruckExpiryChecklist from "./admindashboard/trucks/TruckExpiryChecklist";
+import OcrExpensesTable from "./admindashboard/ocr/OcrExpensesTable";
+import TruckFaults from "./admindashboard/trucks/TruckFaults";
+import OwnerFleetSummary from "./admindashboard/owners/OwnerFleetSummary";
+import EldDashboard from "./admindashboard/eld/EldDailyLogs";
+import Updatecarriersupload from "./admindashboard/carriers/Updatecarriersupload";
+import AutoSuspendCarriers from "./admindashboard/carriers/AutoSuspendCarriers";
+import SplitTripCityHighway from "./admindashboard/trips/SplitTripCityHighway";
+import AddAdditionalStop from "./admindashboard/trips/AddAdditionalStop";
 
 
 
@@ -321,6 +331,8 @@ function App() {
         <Route path="/carriers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Carriers /><Footeradmin /></div>} />
         <Route path="/carriers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createcarriers /><Footeradmin /></div>} />
         <Route path="/carriers/update/:id" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatecarriers /><Footeradmin /></div>} />
+        <Route path="/carriers/updateupload" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Updatecarriersupload /><Footeradmin /></div>} />
+        <Route path="/carriers/autosuspend" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AutoSuspendCarriers /><Footeradmin /></div>} />
         <Route path="/yards" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Yardsdata /><Footeradmin /></div>} />
         <Route path="/customers" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Customers /><Footeradmin /></div>} />
         <Route path="/customers/create" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Createcustomer /><Footeradmin /></div>} />
@@ -384,6 +396,14 @@ function App() {
         <Route path="/locationIncomelist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><LocationIncomeList /><Footeradmin /></div>} />
         <Route path="/driverbulkupload" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><Bulkuploaddriver /><Footeradmin /></div>} />
         <Route path="/eldDailyLogs" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><EldDailyLogs /><Footeradmin /></div>} />
+        <Route path="/truckcompliancechecklist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TruckComplianceChecklist /><Footeradmin /></div>} />
+        <Route path="/truckexpirychecklist" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TruckExpiryChecklist /><Footeradmin /></div>} />
+        <Route path="/ocrexpensestable" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><OcrExpensesTable /><Footeradmin /></div>} />
+        <Route path="/truckfaults" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><TruckFaults /><Footeradmin /></div>} />
+        <Route path="/ownerfleetsummary" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><OwnerFleetSummary /><Footeradmin /></div>} />
+        <Route path="/elddashboard" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><EldDashboard /><Footeradmin /></div>} />
+        <Route path="/trips/split/:tripId" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><SplitTripCityHighway /><Footeradmin /></div>} />
+        <Route path="/trips/add-stop/:tripId" element={<div className="skin-blue sidebar-mini"><AdminLayout/><Adminheader /><AddAdditionalStop /><Footeradmin /></div>} />
       {/*end admin panel */}
 
 

@@ -10,16 +10,16 @@ const Owners = () => {
 
   useEffect(() => {
     axios.get('https://isovia.ca/fms_api/api/fetchownersProductData')
-      .then(res => setData(res.data))
+      .then(res => setData(res.data.data))
       .catch(err => console.log(err));
   }, []);
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
   };
-
+console.log(data)
   const offset = currentPage * itemsPerPage;
-  const currentData = data.slice(offset, offset + itemsPerPage);
+  const currentData = data?.slice(offset, offset + itemsPerPage);
 
   const handleRemove = async (id) => {
     try {
@@ -242,7 +242,7 @@ const Owners = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {currentData.map(item => (
+                          {currentData&&currentData?.map(item => (
                             <tr role="row" className="odd" key={item.id}>
                               <td>{item.id}</td>
                               <td>{item.name}</td>

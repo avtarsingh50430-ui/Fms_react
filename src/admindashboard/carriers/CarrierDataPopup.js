@@ -12,7 +12,7 @@ const CarrierDataPopup = ({ brokerData, popup, setpopup }) => {
   const handleSubmit = async (e, CarrierData) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("name", CarrierData);
+    formData.append("usdot", CarrierData);
 
     try {
       await axios.post("https://isovia.ca/fms_api/api/createcarriers", formData);

@@ -13,8 +13,9 @@ const Createowners = () => {
     zip: '',
     payment_method: '',
     accountno: '',
-    OTsettlement: '',
-    qb: '',
+    isCSA: '',
+    otsettlement: '',
+    db: '',
     remarks: '',
     company: '',
     legal: '',
@@ -25,14 +26,39 @@ const Createowners = () => {
     email: '',
     fax: '',
     fastno: '',
-    fastexp: ''
+    fastexp: '',
+    // New fields from cURL
+    payrolltype: 'weekly',
+    currency: 'CAD',
+    milerate: '',
+    milerateteam: '',
+    emptymilerate: '',
+    emptymilerateteam: '',
+    hourlyrate: '',
+    percentagerate: '',
+    localtax: '',
+    federaltax: '',
+    sinno: '',
+    ltl: 'No',
+    fuelsurcharge: '',
+    extra: '',
+    onsettlements: 'Yes',
+    byorder: 'Yes',
+    ddeduction: 'No',
+    isdefault: 'No',
+    chargename: '',
+    chargecurrency: 'CAD',
+    chargemode: 'Flat',
+    chargeamount: '',
+    appliedon: 'Weekly',
+    chargeremarks: ''
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: type === 'checkbox' ? (checked ? 'yes' : 'no') : value
     }));
   };
 
@@ -152,13 +178,15 @@ const Createowners = () => {
                         onChange={handleChange}
                       >
                         <option value="CA">Canada</option>
+                        <option value="US">United States</option>
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6 col-xs-12 pull pull-left">
                     <div className="form-group">
                       <label htmlFor="store">State/Province</label>
-                      <select className="form-control" id="state" name="state">
+                      <select className="form-control" id="state" name="state" value={formData.state} onChange={handleChange}>
+                        <option value="">Select State</option>
                         <option value="AB">Alberta</option>
                         <option value="BC">British Columbia</option>
                         <option value="MB">Manitoba</option>
@@ -215,6 +243,7 @@ const Createowners = () => {
                         value={formData.payment_method}
                         onChange={handleChange}
                       >
+                        <option value="">Select Payment Method</option>
                         <option value="Cash">Cash</option>
                         <option value="Cheque">Cheque</option>
                         <option value="DD">DD</option>
@@ -227,472 +256,487 @@ const Createowners = () => {
                         <option value="Direct Debit">Direct Debit</option>
                         <option value="Wire Transfer">Wire Transfer</option>
                         <option value="ACH">ACH</option>
+                        <option value="EFT">EFT</option>
                       </select>
                     </div>
                   </div>
                   <div className="col-md-6 col-xs-12 pull pull-left">
                     <div className="form-group">
-                      <label htmlFor="store">Account</label>
-                      <select
+                      <label htmlFor="accountno">Account Number</label>
+                      <input
+                        type="text"
                         className="form-control"
                         id="accountno"
                         name="accountno"
+                        placeholder="Enter Account Number"
+                        autoComplete="off"
                         value={formData.accountno}
                         onChange={handleChange}
-                      >
-                        <option value="AB">Alberta</option>
-                        <option value="BC">British Columbia</option>
-                        <option value="MB">Manitoba</option>
-                        <option value="NB">New Brunswick</option>
-                        <option value="NF">Newfoundland</option>
-                        <option value="NT">Northwest Territories</option>
-                        <option value="NS">Nova Scotia</option>
-                        <option value="NU">Nunavut</option>
-                        <option value="ON">Ontario</option>
-                        <option value="PE">Prince Edward Island</option>
-                        <option value="QC">Quebec</option>
-                        <option value="SK">Saskatchewan</option>
-                        <option value="YT">Yukon Territory</option>
-                      </select>
+                      />
                     </div>
                   </div>
-                  {/*
-              <div class="col-md-4 col-xs-12 pull pull-left">
-                <div class="form-group">
-                <label for="store">Region</label>
-                <select class="form-control" id="region" name="region">
-                <option value="1.0">1.0KW</option>
-                <option value="2.0">2.0KW</option>
-                </select>
-                </div>
-                </div> */}
+                  
                   <br />
                   <div className="col-md-3 col-xs-12 pull pull-left">
                     <div className="form-check">
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        defaultValue="CSA"
                         name="isCSA"
                         id="isCSA"
-                        
+                        checked={formData.isCSA === 'yes'}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label" htmlFor="csa">
+                      <label className="form-check-label" htmlFor="isCSA">
                         is CSA
                       </label>
                     </div>
                   </div>
-                  <m />
                   <div className="col-md-3 col-xs-12 pull pull-left">
                     <div className="form-check">
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        defaultValue="YES"
-                        id="OTsettlement"
-                        name="OTsettlement"
-                        value={formData.OTsettlement}
+                        id="onsettlements"
+                        name="onsettlements"
+                        checked={formData.onsettlements === 'Yes'}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label" htmlFor="ctpat">
-                        One Settlement Charge Tax
+                      <label className="form-check-label" htmlFor="onsettlements">
+                        On Settlements
                       </label>
                     </div>
                   </div>
-                  <m />
                   <div className="col-md-3 col-xs-12 pull pull-left">
                     <div className="form-check">
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        defaultValue="YES"
-                        id="qb"
-                        name="qb"
-                        value={formData.qb}
+                        id="byorder"
+                        name="byorder"
+                        checked={formData.byorder === 'Yes'}
                         onChange={handleChange}
                       />
-                      <label className="form-check-label" htmlFor="pip">
-                        sync to QB
+                      <label className="form-check-label" htmlFor="byorder">
+                        By Order
                       </label>
                     </div>
                   </div>
-                  <m />
-                  {/*
-                <div class="col-md-4 col-xs-12 pull pull-left">
-                <label for="store">Pickup Date</label>   
-                    <div class="input-group date" data-provide="datepicker">
-                    
-                    <input type="text" class="form-control">
-                        <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                        </div>
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="ddeduction"
+                        name="ddeduction"
+                        checked={formData.ddeduction === 'Yes'}
+                        onChange={handleChange}
+                      />
+                      <label className="form-check-label" htmlFor="ddeduction">
+                        Direct Deduction
+                      </label>
                     </div>
-                </div>
-          */}
+                  </div>
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="isdefault"
+                        name="isdefault"
+                        checked={formData.isdefault === 'Yes'}
+                        onChange={handleChange}
+                      />
+                      <label className="form-check-label" htmlFor="isdefault">
+                        Is Default
+                      </label>
+                    </div>
+                  </div>
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="ltl"
+                        name="ltl"
+                        checked={formData.ltl === 'Yes'}
+                        onChange={handleChange}
+                      />
+                      <label className="form-check-label" htmlFor="ltl">
+                        LTL
+                      </label>
+                    </div>
+                  </div>
+                  
+                  {/* Payroll and Rate Section */}
                   <div className="col-md-12 col-xs-12 pull pull-left">
                     <div className="form-group">
-                      <label htmlFor="description">Remarks</label>
-                      <ul className="wysihtml5-toolbar" style={{}}>
-                        <li className="dropdown">
-                          <a
-                            className="btn btn-default dropdown-toggle "
-                            data-toggle="dropdown"
-                          >
-                            <span className="glyphicon glyphicon-font" />
-                            <span className="current-font">Normal text</span>
-                            <b className="caret" />
-                          </a>
-                          <ul className="dropdown-menu">
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="p"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Normal text
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h1"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 1
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h2"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 2
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h3"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 3
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h4"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 4
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h5"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 5
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                data-wysihtml5-command="formatBlock"
-                                data-wysihtml5-command-value="h6"
-                                tabIndex={-1}
-                                href="javascript:;"
-                                unselectable="on"
-                              >
-                                Heading 6
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <div className="btn-group">
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="bold"
-                              title="CTRL+B"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              Bold
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="italic"
-                              title="CTRL+I"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              Italic
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="underline"
-                              title="CTRL+U"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              Underline
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="small"
-                              title="CTRL+S"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              Small
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <a
-                            className="btn  btn-default"
-                            data-wysihtml5-command="formatBlock"
-                            data-wysihtml5-command-value="blockquote"
-                            data-wysihtml5-display-format-name="false"
-                            tabIndex={-1}
-                            href="javascript:;"
-                            unselectable="on"
-                          >
-                            <span className="glyphicon glyphicon-quote" />
-                          </a>
-                        </li>
-                        <li>
-                          <div className="btn-group">
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="insertUnorderedList"
-                              title="Unordered list"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              <span className="glyphicon glyphicon-list" />
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="insertOrderedList"
-                              title="Ordered list"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              <span className="glyphicon glyphicon-th-list" />
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="Outdent"
-                              title="Outdent"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              <span className="glyphicon glyphicon-indent-right" />
-                            </a>
-                            <a
-                              className="btn  btn-default"
-                              data-wysihtml5-command="Indent"
-                              title="Indent"
-                              tabIndex={-1}
-                              href="javascript:;"
-                              unselectable="on"
-                            >
-                              <span className="glyphicon glyphicon-indent-left" />
-                            </a>
-                          </div>
-                        </li>
-                        <li>
-                          <div
-                            className="bootstrap-wysihtml5-insert-link-modal modal fade"
-                            data-wysihtml5-dialog="createLink"
-                          >
-                            <div className="modal-dialog ">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <a className="close" data-dismiss="modal">
-                                    ×
-                                  </a>
-                                  <h3>Insert link</h3>
-                                </div>
-                                <div className="modal-body">
-                                  <div className="form-group">
-                                    <input
-                                      defaultValue="http://"
-                                      className="bootstrap-wysihtml5-insert-link-url form-control"
-                                      data-wysihtml5-dialog-field="href"
-                                    />
-                                  </div>
-                                  <div className="checkbox">
-                                    <label>
-                                      <input
-                                        type="checkbox"
-                                        className="bootstrap-wysihtml5-insert-link-target"
-                                        defaultChecked=""
-                                      />
-                                      Open link in new window
-                                    </label>
-                                  </div>
-                                </div>
-                                <div className="modal-footer">
-                                  <a
-                                    className="btn btn-default"
-                                    data-dismiss="modal"
-                                    data-wysihtml5-dialog-action="cancel"
-                                    href="#"
-                                  >
-                                    Cancel
-                                  </a>
-                                  <a
-                                    href="#"
-                                    className="btn btn-primary"
-                                    data-dismiss="modal"
-                                    data-wysihtml5-dialog-action="save"
-                                  >
-                                    Insert link
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <a
-                            className="btn  btn-default"
-                            data-wysihtml5-command="createLink"
-                            title="Insert link"
-                            tabIndex={-1}
-                            href="javascript:;"
-                            unselectable="on"
-                          >
-                            <span className="glyphicon glyphicon-share" />
-                          </a>
-                        </li>
-                        <li>
-                          <div
-                            className="bootstrap-wysihtml5-insert-image-modal modal fade"
-                            data-wysihtml5-dialog="insertImage"
-                          >
-                            <div className="modal-dialog ">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <a className="close" data-dismiss="modal">
-                                    ×
-                                  </a>
-                                  <h3>Insert image</h3>
-                                </div>
-                                <div className="modal-body">
-                                  <div className="form-group">
-                                    <input
-                                      defaultValue="http://"
-                                      className="bootstrap-wysihtml5-insert-image-url form-control"
-                                      data-wysihtml5-dialog-field="src"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="modal-footer">
-                                  <a
-                                    className="btn btn-default"
-                                    data-dismiss="modal"
-                                    data-wysihtml5-dialog-action="cancel"
-                                    href="#"
-                                  >
-                                    Cancel
-                                  </a>
-                                  <a
-                                    className="btn btn-primary"
-                                    data-dismiss="modal"
-                                    data-wysihtml5-dialog-action="save"
-                                    href="#"
-                                  >
-                                    Insert image
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <a
-                            className="btn  btn-default"
-                            data-wysihtml5-command="insertImage"
-                            title="Insert image"
-                            tabIndex={-1}
-                            href="javascript:;"
-                            unselectable="on"
-                          >
-                            <span className="glyphicon glyphicon-picture" />
-                          </a>
-                        </li>
-                      </ul>
+                      <h4><span className="label label-success">Payroll & Rates</span></h4>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="payrolltype">Payroll Type</label>
+                      <select
+                        className="form-control"
+                        id="payrolltype"
+                        name="payrolltype"
+                        value={formData.payrolltype}
+                        onChange={handleChange}
+                      >
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="twicemonthly">Twice Monthly</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="currency">Currency</label>
+                      <select
+                        className="form-control"
+                        id="currency"
+                        name="currency"
+                        value={formData.currency}
+                        onChange={handleChange}
+                      >
+                        <option value="CAD">CAD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="sinno">SIN Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="sinno"
+                        name="sinno"
+                        placeholder="Enter SIN Number"
+                        autoComplete="off"
+                        value={formData.sinno}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Rate Fields */}
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="milerate">Mile Rate ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="milerate"
+                        name="milerate"
+                        placeholder="0.00"
+                        value={formData.milerate}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="milerateteam">Mile Rate Team ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="milerateteam"
+                        name="milerateteam"
+                        placeholder="0.00"
+                        value={formData.milerateteam}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="emptymilerate">Empty Mile Rate ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="emptymilerate"
+                        name="emptymilerate"
+                        placeholder="0.00"
+                        value={formData.emptymilerate}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="emptymilerateteam">Empty Mile Rate Team ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="emptymilerateteam"
+                        name="emptymilerateteam"
+                        placeholder="0.00"
+                        value={formData.emptymilerateteam}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="hourlyrate">Hourly Rate ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="hourlyrate"
+                        name="hourlyrate"
+                        placeholder="0.00"
+                        value={formData.hourlyrate}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="percentagerate">Percentage Rate (%)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="percentagerate"
+                        name="percentagerate"
+                        placeholder="0.00"
+                        value={formData.percentagerate}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="localtax">Local Tax (%)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="localtax"
+                        name="localtax"
+                        placeholder="0.00"
+                        value={formData.localtax}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="federaltax">Federal Tax (%)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="federaltax"
+                        name="federaltax"
+                        placeholder="0.00"
+                        value={formData.federaltax}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="fuelsurcharge">Fuel Surcharge (%)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="fuelsurcharge"
+                        name="fuelsurcharge"
+                        placeholder="0.00"
+                        value={formData.fuelsurcharge}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="extra">Extra Amount ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="extra"
+                        name="extra"
+                        placeholder="0.00"
+                        value={formData.extra}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="otsettlement">OT Settlement ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="otsettlement"
+                        name="otsettlement"
+                        placeholder="0.00"
+                        value={formData.otsettlement}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-3 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="db">Date of Birth</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        id="db"
+                        name="db"
+                        value={formData.db}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Charge Information Section */}
+                  <div className="col-md-12 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <h4><span className="label label-success">Charge Information</span></h4>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="chargename">Charge Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="chargename"
+                        name="chargename"
+                        placeholder="Enter Charge Name"
+                        value={formData.chargename}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="chargecurrency">Charge Currency</label>
+                      <select
+                        className="form-control"
+                        id="chargecurrency"
+                        name="chargecurrency"
+                        value={formData.chargecurrency}
+                        onChange={handleChange}
+                      >
+                        <option value="CAD">CAD</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="chargemode">Charge Mode</label>
+                      <select
+                        className="form-control"
+                        id="chargemode"
+                        name="chargemode"
+                        value={formData.chargemode}
+                        onChange={handleChange}
+                      >
+                        <option value="Flat">Flat</option>
+                        <option value="Percentage">Percentage</option>
+                        <option value="PerMile">Per Mile</option>
+                        <option value="PerHour">Per Hour</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="chargeamount">Charge Amount ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        className="form-control"
+                        id="chargeamount"
+                        name="chargeamount"
+                        placeholder="0.00"
+                        value={formData.chargeamount}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-4 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="appliedon">Applied On</label>
+                      <select
+                        className="form-control"
+                        id="appliedon"
+                        name="appliedon"
+                        value={formData.appliedon}
+                        onChange={handleChange}
+                      >
+                        <option value="Weekly">Weekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="PerTrip">Per Trip</option>
+                        <option value="Quarterly">Quarterly</option>
+                        <option value="Yearly">Yearly</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-12 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="chargeremarks">Charge Remarks</label>
+                      <textarea
+                        className="form-control"
+                        id="chargeremarks"
+                        name="chargeremarks"
+                        placeholder="Enter charge remarks"
+                        rows="3"
+                        value={formData.chargeremarks}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="col-md-12 col-xs-12 pull pull-left">
+                    <div className="form-group">
+                      <label htmlFor="remarks">General Remarks</label>
                       <textarea
                         type="text"
                         className="form-control"
                         id="remarks"
                         name="remarks"
                         autoComplete="off"
-                        placeholder="Enter 
-              Stop Notes"
-                        style={{ display: "none" }}
+                        placeholder="Enter Remarks"
+                        rows="3"
                         value={formData.remarks}
                         onChange={handleChange}
-                      />
-                      <input
-                        type="hidden"
-                        name="_wysihtml5_mode"
-                        defaultValue={1}
-                      />
-                      <iframe
-                        className="wysihtml5-sandbox"
-                        security="restricted"
-                        allowTransparency="true"
-                        frameBorder={0}
-                        width={0}
-                        height={0}
-                        marginWidth={0}
-                        marginHeight={0}
-                        style={{
-                          display: "block",
-                          backgroundColor: "rgb(255, 255, 255)",
-                          borderCollapse: "separate",
-                          borderColor: "rgb(204, 204, 204)",
-                          borderStyle: "solid",
-                          borderWidth: "0.8px",
-                          clear: "none",
-                          float: "none",
-                          margin: 0,
-                          outline: "rgb(85, 85, 85) none 0px",
-                          outlineOffset: 0,
-                          padding: "6px 12px",
-                          position: "static",
-                          inset: "auto",
-                          zIndex: "auto",
-                          verticalAlign: "baseline",
-                          textAlign: "start",
-                          boxSizing: "border-box",
-                          boxShadow: "rgba(0, 0, 0, 0.075) 0px 1px 1px 0px inset",
-                          borderRadius: 4,
-                          width: "100%",
-                          height: "auto"
-                        }}
                       />
                     </div>
                   </div>
@@ -709,7 +753,7 @@ const Createowners = () => {
                         className="form-control"
                         id="company"
                         name="company"
-                        placeholder="Enter  Company Name"
+                        placeholder="Enter Company Name"
                         autoComplete="off"
                         value={formData.company}
                         onChange={handleChange}
@@ -829,7 +873,7 @@ const Createowners = () => {
                         className="form-control"
                         id="fastno"
                         name="fastno"
-                        placeholder="Enter  Fast#"
+                        placeholder="Enter Fast#"
                         autoComplete="off"
                         value={formData.fastno}
                         onChange={handleChange}
@@ -840,30 +884,15 @@ const Createowners = () => {
                     <label htmlFor="store">Fast Exp Date</label>
                     <div className="input-group date" data-provide="datepicker">
                       <input
-                        type="text"
+                        type="date"
                         id="fastexp"
                         name="fastexp"
                         className="form-control"
                         value={formData.fastexp}
                         onChange={handleChange}
                       />
-                      <div className="input-group-addon">
-                        <span className="glyphicon glyphicon-th" />
-                      </div>
                     </div>
                   </div>
-                  {/*
-                <div class="col-md-4 col-xs-12 pull pull-left">
-                <label for="store">Pickup Date</label>   
-                    <div class="input-group date" data-provide="datepicker">
-                    
-                    <input type="text" class="form-control">
-                        <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                    </div>
-                </div>
-          */}
                 </div>
               </div>
             </form>

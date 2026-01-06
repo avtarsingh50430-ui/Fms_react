@@ -153,6 +153,20 @@ console.log(list)
                                 >
                                   Logistics
                                 </Link>
+                                                            <Link
+                              to={`/trips/split/${item.id}`}
+                              className="btn btn-xs btn-warning"
+                            >
+                              Split Trip
+                            </Link>
+                            <Link
+                            to={`/trips/add-stop/${item.id}`}
+                            className="btn btn-xs btn-info"
+                          >
+                            Add Stop
+                          </Link>
+
+
                               </td>
                             </tr>
                           ))}

@@ -68,7 +68,14 @@ const Sidebar = () => {
           <li className="nav-item"><Link className="nav-link" to={'/custompage'}><i className="fa fa-circle-o" />Custom Page </Link></li>
           <li className="nav-item"><Link className="nav-link" to={'/listcoversheet'}><i className="fa fa-circle-o" />list cover sheet</Link></li>
           <li className="nav-item"><Link className="nav-link" to={'/trailerPerformance'}><i className="fa fa-circle-o" />Trailer Performance</Link></li>
-          
+          <li className="nav-item"><Link className="nav-link" to={'/truckcompliancechecklist'}><i className="fa fa-circle-o" />Truck Compliance Checklist </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/truckexpirychecklist'}><i className="fa fa-circle-o" />Truck Expiry Checklist  </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/ocrexpensestable'}><i className="fa fa-circle-o" />Ocr Expenses Table  </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/truckfaults'}><i className="fa fa-circle-o" />Truck Faults   </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/ownerfleetsummary'}><i className="fa fa-circle-o" />Owner Fleet Summary   </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/carriers'}><i className="fa fa-circle-o" />Carriers   </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/carriers/updateupload'}><i className="fa fa-circle-o" />Carriers Upload  </Link></li>
+          <li className="nav-item"><Link className="nav-link" to={'/carriers/autosuspend'}><i className="fa fa-circle-o" />Carriers Autosuspend  </Link></li>
           <li className="nav-item" id="iftaMenu">
             <Link className="nav-link" to="/iftalist">
               <i className="fa fa-file-text" /> <span> eManifest Portal</span>

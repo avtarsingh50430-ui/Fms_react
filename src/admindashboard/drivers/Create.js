@@ -86,58 +86,61 @@ const Createdrivers = () => {
 const autoFillDriverForm = (ocr) => {
   let update = {};
 
-if (ocr.driving_license) {
-  const dl = ocr.driving_license;
+  /* ✅ MAIN SOURCE */
+  if (ocr?.extracted) {
+    const dl = ocr.extracted;
 
-  // NAME FIX
-  const fullName = dl.name || "";
-  const nameParts = fullName.split(" ");
-  const fname = nameParts[0] || "";
-  const lname = nameParts.slice(1).join(" ") || "";
+    // ---------- NAME ----------
+    const fullName = (dl.name || "").trim();
+    const parts = fullName.split(/\s+/);
+    const fname = parts.shift() || "";
+    const lname = parts.join(" ");
 
-  // ADDRESS FIX
-  const address = dl.address || "";
-  const addressParts = address.split(",");
+    // ---------- ADDRESS ----------
+    const address = dl.address || "";
+    const addr = address.split(",").map(s => s.trim());
 
-  const address1 = addressParts[0]?.trim() || ""; // 57 Peppermint Close
-  const city = addressParts[1]?.trim() || "";     // Brampton
-  const state = addressParts[2]?.trim().toUpperCase() || ""; // ON
-  const zip = addressParts[3]?.trim().toUpperCase() || "";   // L6P 3C7
+    update = {
+      fname,
+      lname,
+      dob: dl.dob || "",
 
-  update = {
-    fname,
-    lname,
-    address1,
-    city,
-    state,
-    zip,
-    documentno: dl.license_number || "",
-    issuedate: dl.issue_date || "",
-    expiarydate: dl.expiry_date || "",
-    dob: dl.dob || "",
-  };
-}
+      documentno: dl.license_number || "",
+      issuedate: dl.issue_date || "",
+      expiarydate: dl.expiry_date || "",
 
+      address1: addr[0] || "",
+      city: addr[1] || "",
+      state: addr[2]?.toUpperCase() || "",
+      zip: addr[3]?.toUpperCase() || "",
 
-  // --- PDF OCR (Text Parsing) ----
-  if (ocr.raw_text) {
-    const t = ocr.raw_text;
-
-    update.fname = getValue(t, "Name", 1);
-    update.lname = getValue(t, "Name", 2);
-    update.address1 = getValue(t, "Address", 1);
-    update.city = getValue(t, "City");
-    update.state = getValue(t, "State");
-    update.zip = getValue(t, "Zip");
-
-    update.dob = extractDate(t, "Date of birth") || update.dob;
+      gender: dl.sex || "",
+      height: dl.height || "",
+      company: dl.company || ""
+    };
   }
 
-  setFormData((prev) => ({
+  /* ✅ RAW TEXT = FALLBACK (DON’T OVERRIDE VALID DATA) */
+  if (ocr?.raw_text) {
+    const t = ocr.raw_text.replace(/\n/g, " ");
+
+    if (!update.dob) {
+      const m = t.match(/\b(\d{4}\/\d{2}\/\d{2})\b/);
+      if (m) update.dob = m[1];
+    }
+
+    if (!update.documentno) {
+      const m = t.match(/J\d{4}\s\d{5}\s\d{5}/);
+      if (m) update.documentno = m[0];
+    }
+  }
+
+  setFormData(prev => ({
     ...prev,
-    ...update,
+    ...update
   }));
 };
+
 
 
 const getValue = (text, key, part = 1) => {
